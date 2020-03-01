@@ -1,0 +1,5 @@
+D:\Projekty\C#\Alchemy-Engine\Alchemy-Engine\obj\Debug\Alchemy-Engine.csprojAssemblyReference.cache
+D:\Projekty\C#\Alchemy-Engine\Alchemy-Engine\obj\Debug\MainWindow.g.cs
+D:\Projekty\C#\Alchemy-Engine\Alchemy-Engine\obj\Debug\App.g.cs
+D:\Projekty\C#\Alchemy-Engine\Alchemy-Engine\obj\Debug\Alchemy-Engine_MarkupCompile.cache
+D:\Projekty\C#\Alchemy-Engine\Alchemy-Engine\obj\Debug\Alchemy-Engine_MarkupCompile.lref

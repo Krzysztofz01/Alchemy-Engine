@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Alchemy_Engine
 {
@@ -74,12 +71,64 @@ namespace Alchemy_Engine
 
         private void colorBubbleSort()
         {
-            //sort here
+            for (int i = 0; i < colorContainer.Count - 1; i++)
+            {
+                for (int j = 0; j < colorContainer.Count - i - 1; j++)
+                {
+                    if (colorContainer[j].count > colorContainer[j + 1].count)
+                    {
+                        Pixel tmp = colorContainer[j];
+                        colorContainer[j] = colorContainer[j + 1];
+                        colorContainer[j + 1] = tmp;
+                    }
+                }
+            }
         }
 
-        public void pickColor()
+        public List<string> getColors(int amount, bool applyFilter, int filterThreshold = 0)
         {
-            //return ,,n'' colors
+            if(colorContainer.Count >= amount)
+            {
+                List<string> outputArray = new List<string>();
+                if(applyFilter)
+                {
+                    AlchemyFilter filter = new AlchemyFilter();
+                    outputArray.Add(colorContainer[0].color);
+                    bool noSimilarColors = true;
+                    for (int i = 0; i < colorContainer.Count; i++)
+                    {
+                        for (int j = 0; j < outputArray.Count; j++)
+                        {
+                            if(filter.filterColorDifference(
+                                AlchemyConverter.hexToColor(outputArray[j]),
+                                AlchemyConverter.hexToColor(colorContainer[i].color),
+                                filterThreshold))
+                            {
+                                noSimilarColors = false;
+                                break;
+                            }   
+                        }
+
+                        if(noSimilarColors)
+                        {
+                            outputArray.Add(colorContainer[i].color);
+                            if(outputArray.Count == amount)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < amount; i++)
+                    {
+                        outputArray.Add(colorContainer[i].color);
+                    }
+                }
+                return outputArray;
+            }
+            return null;
         }
     }
 

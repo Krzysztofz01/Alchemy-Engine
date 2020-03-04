@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Alchemy_Engine
 {
@@ -83,6 +84,62 @@ namespace Alchemy_Engine
                     }
                 }
             }
+        }
+
+        public void generatePalletePointer()
+        {
+            //Lock bitmaps bits in memory
+            Rectangle rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+            System.Drawing.Imaging.BitmapData bitmapData = bitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+            //Get the memory address of the first line
+            IntPtr ptr = bitmapData.Scan0;
+
+            //Declare an array to hold bytes of the bitmap
+            int bytes = bitmapData.Stride * bitmap.Height;
+            int stride = bitmapData.Stride;
+            byte[] rgbValues = new byte[bytes];
+
+            Marshal.Copy(ptr, rgbValues, 0, bytes);
+            Pixel currentCheck;
+
+            for (int column = 0; column < bitmapData.Height; column++)
+            {
+                for (int row = 0; row < bitmapData.Width; row++)
+                {
+                    currentCheck = new Pixel(AlchemyConverter.rgbToHex(
+                        (byte)(rgbValues[(column * stride) + (row * 3)]),
+                        (byte)(rgbValues[(column * stride) + (row * 3) + 1]),
+                        (byte)(rgbValues[(column * stride) + (row * 3) + 2])
+                        ));
+
+                    if (colorContainer.Count == 0)
+                    {
+                        colorContainer.Add(currentCheck);
+                    }
+                    else
+                    {
+                        foreach (Pixel element in colorContainer)
+                        {
+                            if (element.color == currentCheck.color)
+                            {
+                                element.count++;
+                                currentCheck.exist = true;
+                                break;
+                            }
+                        }
+
+                        if (!currentCheck.exist)
+                        {
+                            colorContainer.Add(currentCheck);
+                        }
+
+                    }
+
+
+                }
+            }
+            bitmap.UnlockBits(bitmapData);
         }
 
         public List<string> getColors(int amount, bool applyFilter, int filterThreshold = 0)

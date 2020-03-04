@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Alchemy_Engine"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Alchemy-Engine" Height="450" Width="330" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Image Height="130" Margin="10,48,10,0" VerticalAlignment="Top" Source="assets/logo.png" StretchDirection="DownOnly"/>
+        <Button x:Name="btnPallete" Content="Palette Generator" Margin="10,236,10,145"/>
+        <Button x:Name="btnCovert" Content="Convert Image" Margin="10,281,10,100"/>
+        <Button x:Name="btnGenerator" Content="Solid Generator" Margin="10,326,10,55"/>
+        <Button x:Name="btnLumetri" Content="Lumetri Editor" Margin="10,371,10,10"/>
     </Grid>
 </Window>

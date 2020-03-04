@@ -11,6 +11,11 @@ namespace Alchemy_Engine
             return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
+        public static string rgbToHex(byte b, byte g, byte r)
+        {
+            return "#" + r.ToString("X2") + g.ToString("X2") + b.ToString("X2");
+        }
+
         //Convert Hex string to Color object
         public static Color hexToColor(string color)
         {

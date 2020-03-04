@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:Alchemy_Engine"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <BitmapImage x:Key="logo" UriSource="assets\logo.png"></BitmapImage>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

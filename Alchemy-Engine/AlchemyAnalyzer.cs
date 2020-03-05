@@ -208,6 +208,11 @@ namespace Alchemy_Engine
         {
             return null;
         }
+
+        public List<string> getPaletteLog()
+        {
+            return null;
+        }
     }
 
     class Pixel

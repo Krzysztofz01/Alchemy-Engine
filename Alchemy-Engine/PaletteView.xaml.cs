@@ -59,7 +59,7 @@ namespace Alchemy_Engine
         {
             if(this.analyzer != null)
             {
-                Window exportPalette = new ExportView(analyzer.getPaletteImage());
+                Window exportPalette = new ExportView(analyzer.getPaletteImage(), analyzer.getPaletteLog());
                 exportPalette.Show();
             }
         }

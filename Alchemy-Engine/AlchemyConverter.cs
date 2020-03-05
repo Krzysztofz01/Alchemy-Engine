@@ -148,12 +148,99 @@ namespace Alchemy_Engine
 
         //FILE 
         
-        public static void bitmapToJpeg(Bitmap bitmap, string destinationPath)
+        public static void bitmapToJpeg(Bitmap bitmap, string destinationPath, int quality)
         {
-            ImageCodecInfo jpgEncoder = GetEncoder(ImageFormatConverter.);
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+            ImageCodecInfo ici = null;
+
+            foreach(ImageCodecInfo codec in codecs)
+            {
+                if(codec.MimeType == "image/jpeg")
+                {
+                    ici = codec;
+                }
+            }
+
+            EncoderParameters ep = new EncoderParameters();
+            ep.Param[0] = new EncoderParameter(Encoder.Quality, (long)quality);
+            bitmap.Save(destinationPath + "\\bitmapPalette.jpg", ici, ep);
         }
 
-        
+        public static void imageToJpeg(string filePath, string destinationPath, int quality)
+        {
+            Bitmap bitmap = (Bitmap)Image.FromFile(filePath);
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+            ImageCodecInfo ici = null;
+            
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.MimeType == "image/jpeg")
+                {
+                    ici = codec;
+                }
+            }
+
+            EncoderParameters ep = new EncoderParameters();
+            ep.Param[0] = new EncoderParameter(Encoder.Quality, (long)quality);
+            bitmap.Save(destinationPath + "\\convertedImage.jpg", ici, ep);
+        }
+
+        public static void bitmapToPng(Bitmap bitmap, string destinationPath, string transparency)
+        {
+            switch (transparency)
+            {
+                case "defualt":
+                    {
+                        bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
+                    }
+                    break;
+                case "white":
+                    {
+                        bitmap.MakeTransparent(Color.White);
+                        bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
+                    }
+                    break;
+                case "black":
+                    {
+                        bitmap.MakeTransparent(Color.Black);
+                        bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
+                    }
+                    break;
+            }
+        }
+
+        public static void imageToPng(string filePath, string destinationPath, string transparency)
+        {
+            Bitmap bitmap = (Bitmap)Image.FromFile(filePath);
+            switch (transparency)
+            {
+                case "defualt":
+                    {
+                        bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
+                    } break;
+                case "white": 
+                    {
+                        bitmap.MakeTransparent(Color.White);
+                        bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
+                    } break;
+                case "black":
+                    {
+                        bitmap.MakeTransparent(Color.Black);
+                        bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
+                    } break;
+            }
+        }
+
+        public static void bitmapToBmp(Bitmap bitmap, string destination)
+        {
+            bitmap.Save(destination + "\\convertedImage.bmp", ImageFormat.Bmp);
+        }
+
+        public static void imageToBmp(string filePath, string destination)
+        {
+            Bitmap bitmap = (Bitmap)Image.FromFile(filePath);
+            bitmap.Save(destination + "\\convertedImage.bmp");
+        }
     }
 
     struct HSL

@@ -33,9 +33,9 @@
         <Button x:Name="btnSelectFile" Content="Select file" Grid.Row="1" Grid.Column="1" Click="btnSelectFileListener"/>
         <Button x:Name="btnSaveLocation" Content="Select save location" Grid.Row="3" Grid.Column="1" Click="btnSaveLocationListener"/>
         <Label Content="Select image format" HorizontalContentAlignment="Center" Grid.Row="5" Grid.Column="1"/>
-        <ComboBox x:Name="cbImageFormat" HorizontalContentAlignment="Center" Grid.Row="6" Grid.Column="1"/>
+        <ComboBox x:Name="cbImageFormat" HorizontalContentAlignment="Center" Grid.Row="6" Grid.Column="1" SelectionChanged="cbImageFormatListener"/>
         <Label x:Name="slName" Content="sample" HorizontalAlignment="Center" Grid.Row="8" Grid.Column="1"/>
-        <Slider x:Name="slSettings" Minimum="0" Maximum="100" SmallChange="1" LargeChange="1" Value="50" Grid.Row="9" Grid.Column="1"/>
+        <Slider x:Name="slSettings" Minimum="0" Maximum="100" SmallChange="1" LargeChange="1" Value="50" Grid.Row="9" Grid.Column="1" ValueChanged="slSettingsListener"/>
         <Button x:Name="btnExport" Content="Select save location" Grid.Row="14" Grid.Column="1" Click="btnExportListener"/>
 
 

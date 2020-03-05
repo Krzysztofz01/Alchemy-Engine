@@ -24,5 +24,11 @@ namespace Alchemy_Engine
         {
             InitializeComponent();
         }
+
+        private void btnPalleteListener(object sender, RoutedEventArgs e)
+        {
+            Window palleteGenerator = new PaletteView();
+            palleteGenerator.Show();
+        }
     }
 }

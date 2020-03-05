@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using Wpf = System.Windows.Controls;
 
 namespace Alchemy_Engine
 {
@@ -19,7 +20,7 @@ namespace Alchemy_Engine
             this.accuracy = accuracy;
 
             colorContainer = new List<Pixel>();
-
+            
             downscaleWidth = Decimal.ToInt32(bitmap.Width * (imageScale / 100));
             downscaleHeight = Decimal.ToInt32(bitmap.Height * (imageScale / 100));
         }
@@ -142,7 +143,7 @@ namespace Alchemy_Engine
             bitmap.UnlockBits(bitmapData);
         }
 
-        public List<string> getColors(int amount, bool applyFilter, int filterThreshold = 0)
+        public List<Wpf.Label> getColors(int amount, bool applyFilter, int filterThreshold = 0)
         {
             if(colorContainer.Count >= amount)
             {
@@ -183,7 +184,22 @@ namespace Alchemy_Engine
                         outputArray.Add(colorContainer[i].color);
                     }
                 }
-                return outputArray;
+
+                //Convert hex color informations to Grid labels
+                List<Wpf.Label> outputLabels = new List<Wpf.Label>();
+                int rowOffset = 1;
+                foreach(string color in outputArray)
+                {
+                    Wpf.Label lbl = new Wpf.Label();
+                    Wpf.Grid.SetColumn(lbl, 2);
+                    Wpf.Grid.SetRow(lbl, rowOffset);
+                    Color tmpColor = AlchemyConverter.hexToColor(color);
+                    lbl.Background = new System.Windows.Media.SolidColorBrush(
+                        System.Windows.Media.Color.FromRgb(tmpColor.R, tmpColor.G, tmpColor.B));
+                    outputLabels.Add(lbl);
+                    rowOffset += 2;
+                }
+                return outputLabels;    
             }
             return null;
         }

@@ -5,9 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Alchemy_Engine"
         mc:Ignorable="d"
-        Title="Alchemy-Engine" Height="562.5" Width="1000">
+        Title="Alchemy-Engine" Height="592.5" Width="1000">
     <Grid>
-        <Image x:Name="imageHolder" Margin="10"/>
+        <Image x:Name="imageHolder" Margin="10,10,10,0" Height="511" VerticalAlignment="Top"/>
+        <Grid x:Name="paletteGrid" Margin="10,10,10,0" Height="511" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="26.6"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="26.6"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="26.6"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="26.6"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="26.6"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="26.6"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="196"/>
+                <ColumnDefinition Width="196"/>
+                <ColumnDefinition Width="196"/>
+                <ColumnDefinition Width="196"/>
+                <ColumnDefinition Width="196"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid Height="25" Margin="10,526,10,0" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="65.3"/>
+                <ColumnDefinition Width="239.6"/>
+                <ColumnDefinition Width="65.3"/>
+                <ColumnDefinition Width="239.6"/>
+                <ColumnDefinition Width="65.3"/>
+                <ColumnDefinition Width="239.6"/>
+                <ColumnDefinition Width="65.3"/>
+            </Grid.ColumnDefinitions>
 
+            <Button x:Name="btnSelectFile" Content="Select file" Grid.Column="1" Click="btnSelectFileListener"/>
+            <Button x:Name="btnSampleImage" Content="Sample image" Grid.Column="3" IsEnabled="False" Click="btnSampleImageListener"/>
+            <Button x:Name="btnSaveImage" Content="SaveImage" Grid.Column="5" IsEnabled="False"/>
+        </Grid>
     </Grid>
 </Window>

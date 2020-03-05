@@ -29,3 +29,5 @@ D:\projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\Alchemy-Engine.exe
 D:\projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\Alchemy-Engine.pdb
 D:\projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\PaletteView.g.cs
 D:\projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\PaletteView.baml
+D:\Projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\ExportView.g.cs
+D:\Projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\ExportView.baml

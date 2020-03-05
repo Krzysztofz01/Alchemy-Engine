@@ -1,0 +1,43 @@
+﻿<Window x:Class="Alchemy_Engine.ExportView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Alchemy_Engine"
+        mc:Ignorable="d"
+        Title="Alchemy-Engine" Height="450" Width="330" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7"/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="7"/>
+        </Grid.ColumnDefinitions>
+
+        <Button x:Name="btnSelectFile" Content="Select file" Grid.Row="1" Grid.Column="1" Click="btnSelectFileListener"/>
+        <Button x:Name="btnSaveLocation" Content="Select save location" Grid.Row="3" Grid.Column="1" Click="btnSaveLocationListener"/>
+        <Label Content="Select image format" HorizontalContentAlignment="Center" Grid.Row="5" Grid.Column="1"/>
+        <ComboBox x:Name="cbImageFormat" HorizontalContentAlignment="Center" Grid.Row="6" Grid.Column="1"/>
+        <Label x:Name="slName" Content="sample" HorizontalAlignment="Center" Grid.Row="8" Grid.Column="1"/>
+        <Slider x:Name="slSettings" Minimum="0" Maximum="100" SmallChange="1" LargeChange="1" Value="50" Grid.Row="9" Grid.Column="1"/>
+        <Button x:Name="btnExport" Content="Select save location" Grid.Row="14" Grid.Column="1" Click="btnExportListener"/>
+
+
+    </Grid>
+</Window>

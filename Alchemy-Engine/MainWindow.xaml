@@ -9,7 +9,7 @@
     <Grid>
         <Image Height="130" Margin="10,48,10,0" VerticalAlignment="Top" Source="assets/logo.png" StretchDirection="DownOnly"/>
         <Button x:Name="btnPallete" Content="Palette Generator" Margin="10,236,10,145" Click="btnPalleteListener"/>
-        <Button x:Name="btnCovert" Content="Convert Image" Margin="10,281,10,100"/>
+        <Button x:Name="btnCovert" Content="Convert Image" Margin="10,281,10,100" Click="btnConvertListener"/>
         <Button x:Name="btnGenerator" Content="Solid Generator" Margin="10,326,10,55"/>
         <Button x:Name="btnLumetri" Content="Lumetri Editor" Margin="10,371,10,10"/>
     </Grid>

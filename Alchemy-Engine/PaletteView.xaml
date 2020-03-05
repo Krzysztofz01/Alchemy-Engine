@@ -43,7 +43,7 @@
 
             <Button x:Name="btnSelectFile" Content="Select file" Grid.Column="1" Click="btnSelectFileListener"/>
             <Button x:Name="btnSampleImage" Content="Sample image" Grid.Column="3" IsEnabled="False" Click="btnSampleImageListener"/>
-            <Button x:Name="btnSaveImage" Content="SaveImage" Grid.Column="5" IsEnabled="False"/>
+            <Button x:Name="btnSaveImage" Content="SaveImage" Grid.Column="5" IsEnabled="False" Click="btnSaveImageListener"/>
         </Grid>
     </Grid>
 </Window>

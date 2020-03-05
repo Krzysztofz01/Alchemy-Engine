@@ -203,6 +203,11 @@ namespace Alchemy_Engine
             }
             return null;
         }
+
+        public Bitmap getPaletteImage()
+        {
+            return null;
+        }
     }
 
     class Pixel

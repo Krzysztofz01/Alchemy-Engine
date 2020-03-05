@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Alchemy_Engine
 {
@@ -143,6 +144,13 @@ namespace Alchemy_Engine
                 return q1 + (q2 - q1) * (240 - hue) / 60;
             }
             return q1;
+        }
+
+        //FILE 
+        
+        public static void bitmapToJpeg(Bitmap bitmap, string destinationPath)
+        {
+            ImageCodecInfo jpgEncoder = GetEncoder(ImageFormatConverter.);
         }
 
         

@@ -30,5 +30,11 @@ namespace Alchemy_Engine
             Window palleteGenerator = new PaletteView();
             palleteGenerator.Show();
         }
+
+        private void btnConvertListener(object sender, RoutedEventArgs e)
+        {
+            Window exportMenu = new ExportView();
+            exportMenu.Show();
+        }
     }
 }

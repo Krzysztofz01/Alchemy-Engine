@@ -31,3 +31,8 @@ D:\projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\PaletteView.g.cs
 D:\projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\PaletteView.baml
 D:\Projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\ExportView.g.cs
 D:\Projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\ExportView.baml
+D:\Projekty\Alchemy-Engine\Alchemy-Engine\bin\Debug\Newtonsoft.Json.dll
+D:\Projekty\Alchemy-Engine\Alchemy-Engine\bin\Debug\Newtonsoft.Json.xml
+D:\Projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\Alchemy-Engine.csproj.CopyComplete
+D:\Projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\GeneratorView.g.cs
+D:\Projekty\Alchemy-Engine\Alchemy-Engine\obj\Debug\GeneratorView.baml

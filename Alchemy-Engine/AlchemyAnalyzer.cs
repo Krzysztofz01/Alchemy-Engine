@@ -211,7 +211,12 @@ namespace Alchemy_Engine
 
         public List<string> getPaletteLog()
         {
-            return null;
+            List<string> hexColors = new List<string>();
+            foreach(Pixel pixel in colorContainer)
+            {
+                hexColors.Add(pixel.color);
+            }
+            return hexColors;
         }
     }
 

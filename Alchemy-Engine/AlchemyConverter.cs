@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace Alchemy_Engine
 {
@@ -8,6 +11,11 @@ namespace Alchemy_Engine
     {
         //Convert Color struct to Hex string
         public static string colorToHex(Color color)
+        {
+            return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+        }
+
+        public static string mediaColorToHex(System.Windows.Media.Color color)
         {
             return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
@@ -185,22 +193,22 @@ namespace Alchemy_Engine
             bitmap.Save(destinationPath + "\\convertedImage.jpg", ici, ep);
         }
 
-        public static void bitmapToPng(Bitmap bitmap, string destinationPath, string transparency)
+        public static void bitmapToPng(Bitmap bitmap, string destinationPath, int transparency)
         {
             switch (transparency)
             {
-                case "defualt":
+                case 1:
                     {
                         bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
                     }
                     break;
-                case "white":
+                case 2:
                     {
                         bitmap.MakeTransparent(Color.White);
                         bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
                     }
                     break;
-                case "black":
+                case 3:
                     {
                         bitmap.MakeTransparent(Color.Black);
                         bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
@@ -209,21 +217,21 @@ namespace Alchemy_Engine
             }
         }
 
-        public static void imageToPng(string filePath, string destinationPath, string transparency)
+        public static void imageToPng(string filePath, string destinationPath, int transparency)
         {
             Bitmap bitmap = (Bitmap)Image.FromFile(filePath);
             switch (transparency)
             {
-                case "defualt":
+                case 1:
                     {
                         bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
                     } break;
-                case "white": 
+                case 2: 
                     {
                         bitmap.MakeTransparent(Color.White);
                         bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
                     } break;
-                case "black":
+                case 3:
                     {
                         bitmap.MakeTransparent(Color.Black);
                         bitmap.Save(destinationPath + "\\covertedImage.png", ImageFormat.Png);
@@ -240,6 +248,11 @@ namespace Alchemy_Engine
         {
             Bitmap bitmap = (Bitmap)Image.FromFile(filePath);
             bitmap.Save(destination + "\\convertedImage.bmp");
+        }
+
+        public static void colorContainerToJson(List<string> array, string destination)
+        {
+            File.WriteAllText(destination + "\\paletteLog.json", JsonConvert.SerializeObject(array, Formatting.Indented));
         }
     }
 

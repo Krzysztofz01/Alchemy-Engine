@@ -1,19 +1,9 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using winForm = System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Alchemy_Engine
 {
@@ -82,17 +72,66 @@ namespace Alchemy_Engine
                 btnExport.IsEnabled = true;
                 this.destinationPath = folderDialog.SelectedPath;
                 btnSaveLocation.Content = "Destination: " + folderDialog.SelectedPath;
-                Console.WriteLine(this.destinationPath);
             }
         }
 
         private void btnExportListener(object sender, RoutedEventArgs e)
         {
-            if((this.destinationPath != null)&&((this.filePath != null)||(this.bitmap != null)))
+            if(this.destinationPath != null)
             {
-                switch(cbImageFormat.SelectedItem)
+                if(this.filePath != null)
                 {
-
+                    switch(cbImageFormat.SelectedItem)
+                    {
+                        case "JPG (Photography and WWW)":
+                            {
+                                AlchemyConverter.imageToJpeg(this.filePath, this.destinationPath, (int)slSettings.Value);
+                            }
+                            break;
+                        case "PNG (Supports transparency)":
+                            {
+                                AlchemyConverter.imageToPng(this.filePath, this.destinationPath, (int)slSettings.Value);
+                            }
+                            break;
+                        case "BMP (Default bitmap format)":
+                            {
+                                AlchemyConverter.imageToBmp(this.filePath, this.destinationPath);
+                            }
+                            break;
+                        case "RAW(Raw text image data)":
+                            {
+                                //
+                            }
+                            break;
+                        default: break;
+                    }
+                }
+                else if(this.bitmap != null)
+                {
+                    switch (cbImageFormat.SelectedItem)
+                    {
+                        case "JPG (Photography and WWW)":
+                            {
+                                AlchemyConverter.bitmapToJpeg(this.bitmap, this.destinationPath, (int)slSettings.Value);
+                            }
+                            break;
+                        case "PNG (Supports transparency)":
+                            {
+                                AlchemyConverter.bitmapToPng(this.bitmap, this.destinationPath, (int)slSettings.Value);
+                            }
+                            break;
+                        case "BMP (Default bitmap format)":
+                            {
+                                AlchemyConverter.bitmapToBmp(this.bitmap, this.destinationPath);
+                            }
+                            break;
+                        case "JSON (Save palette to JSON file)":
+                            {
+                                AlchemyConverter.colorContainerToJson(this.sampledColors, this.destinationPath);
+                            }
+                            break;
+                        default: break;
+                    }
                 }
             }
         }
@@ -128,7 +167,25 @@ namespace Alchemy_Engine
                         slSettings.Value = 50;
                     }
                     break;
-            }
+                case "RAW(Raw text image data)":
+                    {
+                        slName.Content = "";
+                        slSettings.IsEnabled = false;
+                        slSettings.Minimum = 1;
+                        slSettings.Maximum = 100;
+                        slSettings.Value = 50;
+                    }
+                    break;
+                case "JSON(Save palette to JSON file)":
+                    {
+                        slName.Content = "";
+                        slSettings.IsEnabled = false;
+                        slSettings.Minimum = 1;
+                        slSettings.Maximum = 100;
+                        slSettings.Value = 50;
+                    }
+                    break;
+            }       
         }
 
         private void slSettingsListener(object sender, RoutedPropertyChangedEventArgs<double> e)

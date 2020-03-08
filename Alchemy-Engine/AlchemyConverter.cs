@@ -34,58 +34,56 @@ namespace Alchemy_Engine
         //Convert Color struct to HSL struct (RGB to HSL)
         public static HSL colorToHsl(Color color)
         {
-            HSL hsl = new HSL(0, 0, 0);
+            double h = 0.0;
+            double s = 0.0;
+            double l = 0.0;
 
-            double doubleR = color.R / 255.0;
-            double doubleG = color.G / 255.0;
-            double doubleB = color.B / 255.0;
+            double r = color.R / 255.0;
+            double g = color.G / 255.0;
+            double b = color.B / 255.0;
 
-            int maxValue = Math.Max(color.R, Math.Max(color.G, color.B));
-            int minValue = Math.Min(color.R, Math.Min(color.G, color.B));
+            double min = Math.Min(r, Math.Min(g, b));
+            double max = Math.Max(r, Math.Max(g, b));
 
-            double diff = maxValue - minValue;
-            hsl.L = (maxValue + minValue) / 2;
-            if(Math.Abs(diff) < 0.00001)
+            l = (min + max) / 2.0;
+
+            if (min == max)
             {
-                hsl.S = 0;
-                hsl.H = 0;
+                h = 0.0;
+                s = 0.0;
             }
             else
             {
-                if(hsl.L <= 0.5)
+                if (l <= 0.5)
                 {
-                    hsl.S = (int) Math.Round(diff / (maxValue + minValue));
+                    s = (max - min) / (max + min);
                 }
                 else
                 {
-                    hsl.S = (int) Math.Round(diff / (2 - maxValue - minValue));
+                    s = ((max - min) / (2.0 - max - min));
                 }
 
-                double distanceR = (maxValue - doubleR) / diff;
-                double distanceG = (maxValue - doubleG) / diff;
-                double distanceB = (maxValue - doubleB) / diff;
-
-                if(doubleR == maxValue)
+                if (max == r)
                 {
-                    hsl.H = (int) Math.Round(distanceB - distanceG);
+                    h = (g - b) / (max - min);
                 }
-                else if(doubleG == maxValue)
+                else if (max == g)
                 {
-                    hsl.H = (int) Math.Round(2 + distanceR - distanceB);
+                    h = 2.0 + (b - r) / (max - min);
                 }
-                else
+                else if (max == b)
                 {
-                    hsl.H = (int) Math.Round(4 + distanceG - distanceR);
+                    h = 4.0 + (r - g) / (max - min);
                 }
 
-                hsl.H *= 60;
-                if(hsl.H < 0)
+                h *= 60.0;
+                if (h < 0)
                 {
-                    hsl.H += 360;
+                    h += 360.0;
                 }
             }
 
-            return hsl;
+            return new HSL(h, s, l);
         }
 
         //Convert HSL struct to Color struct (HSL to RGB)
@@ -258,10 +256,10 @@ namespace Alchemy_Engine
 
     struct HSL
     {
-        public int H { get; set; }
-        public int S { get; set; }
-        public int L { get; set; }
-        public HSL(int hue, int saturation, int luminance)
+        public double H { get; set; }
+        public double S { get; set; }
+        public double L { get; set; }
+        public HSL(double hue, double saturation, double luminance)
         {
             H = hue;
             S = saturation;

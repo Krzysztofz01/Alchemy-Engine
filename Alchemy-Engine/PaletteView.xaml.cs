@@ -36,20 +36,21 @@ namespace Alchemy_Engine
             }
         }
 
-        private void btnSampleImageListener(object sender, RoutedEventArgs e)
+        private async void btnSampleImageListener(object sender, RoutedEventArgs e)
         {
             if(this.filePath != null)
             {
-                analyzer = new AlchemyAnalyzer(new Bitmap(this.filePath), 0, 0);
-                analyzer.generatePalletePointer();
-                List<Label> outputLabelArray = analyzer.getColors(5, false, 50);
+                analyzer = new AlchemyAnalyzer(new Bitmap(this.filePath), 25);
+                analyzer.samplePaletteLock();
+                /*List<Label> outputLabelArray = analyzer.getColors(5, true, 80);
 
                 foreach(Label label in outputLabelArray)
                 {
                     paletteGrid.Children.Add(label);
                 }
 
-                btnSaveImage.IsEnabled = true;              
+                btnSaveImage.IsEnabled = true; 
+                */
             }
 
             

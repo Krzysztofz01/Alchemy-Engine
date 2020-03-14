@@ -1,75 +1,119 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Runtime.InteropServices;
+using System.Drawing.Imaging;
+using System.Threading.Tasks;
 using Wpf = System.Windows.Controls;
 
 namespace Alchemy_Engine
 {
     class AlchemyAnalyzer
     {
-        private Bitmap bitmap;
-        private List<Pixel> colorContainer;
-        private int downscaleWidth;
-        private int downscaleHeight;
-        private int accuracy;
-
-        public AlchemyAnalyzer(Bitmap bitmap, decimal imageScale, int accuracy)
+        public struct AnalyzerResults
         {
-            this.bitmap = bitmap;
-            this.accuracy = accuracy;
-
-            colorContainer = new List<Pixel>();
-            
-            downscaleWidth = Decimal.ToInt32(bitmap.Width * (imageScale / 100));
-            downscaleHeight = Decimal.ToInt32(bitmap.Height * (imageScale / 100));
+            public Bitmap image { get; private set; }
+            public List<string> colors { get; private set; }
+            public AnalyzerResults(Bitmap image, List<string>colors)
+            {
+                this.image = image;
+                this.colors = colors;
+            }
         }
 
-        public void generatePalette()
+        private Bitmap bitmap;
+        private List<Pixel> colorContainer;
+        
+        public AlchemyAnalyzer(Bitmap bitmap)
         {
-            Bitmap scaledBitmap = new Bitmap(bitmap, downscaleWidth, downscaleHeight);
+            this.bitmap = bitmap;
+            this.colorContainer = new List<Pixel>();
+        }
 
-            Pixel currentCheck;
-            for(int y=0; y < scaledBitmap.Height; y += accuracy)
+        public AlchemyAnalyzer(Bitmap bitmap, int downScale)
+        {
+            this.bitmap = new Bitmap(bitmap, (int)(bitmap.Width * downScale / 100), (int)(bitmap.Height * downScale / 100));
+            this.colorContainer = new List<Pixel>();
+        }
+
+        //For now the only working method
+        public void samplePaletteLock()
+        {
+            unsafe
             {
-                for(int x=0; x < scaledBitmap.Width; x += accuracy)
-                {
-                    try
-                    {
-                        currentCheck = new Pixel(AlchemyConverter.colorToHex(bitmap.GetPixel(x, y)));
+                BitmapData bitmapData = this.bitmap.LockBits(new Rectangle(0, 0, this.bitmap.Width, this.bitmap.Height), ImageLockMode.ReadOnly, this.bitmap.PixelFormat);
+                int bytesPerPixel = Bitmap.GetPixelFormatSize(this.bitmap.PixelFormat) / 8;
+                int heightInPixel = bitmapData.Height;
+                int widthInBytes = bitmapData.Width * bytesPerPixel;
+                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+                Pixel currentPixel = null;
 
-                        if (colorContainer.Count == 0)
+                for(int y=0; y < heightInPixel; y++)
+                {
+                    byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+                    for(int x=0; x<widthInBytes; x = x + bytesPerPixel)
+                    {
+                        currentPixel = new Pixel(currentLine[x], currentLine[x + 1], currentLine[x + 2]);
+
+                        if(this.colorContainer.Count > 0)
                         {
-                            colorContainer.Add(currentCheck);
-                        }
-                        else
-                        {
-                            foreach (Pixel element in colorContainer)
+                            for (int l = 0; l < this.colorContainer.Count; l++)
                             {
-                                if (element.color == currentCheck.color)
+                                if(currentPixel.color == this.colorContainer[l].color)
                                 {
-                                    element.count++;
-                                    currentCheck.exist = true;
+                                    currentPixel.exist = true;
+                                    this.colorContainer[l].count++;
                                     break;
                                 }
                             }
+                        }
 
-                            if(!currentCheck.exist)
-                            {
-                                colorContainer.Add(currentCheck);
-                            }
-
+                        if(!currentPixel.exist)
+                        {
+                            this.colorContainer.Add(currentPixel);
                         }
                     }
-                    catch (ArgumentOutOfRangeException e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
                 }
+                this.bitmap.UnlockBits(bitmapData);
+                colorBubbleSort();
+                for (int r = 0; r < 5; r++)
+                {
+                    Console.WriteLine(colorContainer[r].color);
+                }
+                
             }
-
-            colorBubbleSort();
         }
+
+
+        //Multi thread method (not working), research about parallel collections
+        public void samplePaletteLockParallel()
+        {
+            unsafe
+            {
+                BitmapData bitmapData = this.bitmap.LockBits(new Rectangle(0, 0, this.bitmap.Width, this.bitmap.Height), ImageLockMode.ReadOnly, this.bitmap.PixelFormat);
+                int bytesPerPixel = Bitmap.GetPixelFormatSize(this.bitmap.PixelFormat) / 8;
+                int heightInPixel = bitmapData.Height;
+                int widthInBytes = bitmapData.Width * bytesPerPixel;
+                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+                Pixel currentPixel = null;
+
+                Parallel.For(0, heightInPixel, y => {
+                    byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+                    for(int x=0; x < widthInBytes; x = x + bytesPerPixel)
+                    {
+                        var cos = new Pixel(currentLine[x], currentLine[x + 1], currentLine[x + 2]);
+                        Console.WriteLine(cos.color);
+                    }
+                });
+                this.bitmap.UnlockBits(bitmapData);
+            }
+        }
+
+        private void colorCountSort()
+        {
+            //https://www.w3resource.com/csharp-exercises/searching-and-sorting-algorithm/searching-and-sorting-algorithm-exercise-4.php
+        }
+
+        
 
         private void colorBubbleSort()
         {
@@ -87,61 +131,7 @@ namespace Alchemy_Engine
             }
         }
 
-        public void generatePalletePointer()
-        {
-            //Lock bitmaps bits in memory
-            Rectangle rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-            System.Drawing.Imaging.BitmapData bitmapData = bitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat);
-
-            //Get the memory address of the first line
-            IntPtr ptr = bitmapData.Scan0;
-
-            //Declare an array to hold bytes of the bitmap
-            int bytes = bitmapData.Stride * bitmap.Height;
-            int stride = bitmapData.Stride;
-            byte[] rgbValues = new byte[bytes];
-
-            Marshal.Copy(ptr, rgbValues, 0, bytes);
-            Pixel currentCheck;
-
-            for (int column = 0; column < bitmapData.Height; column++)
-            {
-                for (int row = 0; row < bitmapData.Width; row++)
-                {
-                    currentCheck = new Pixel(AlchemyConverter.rgbToHex(
-                        (byte)(rgbValues[(column * stride) + (row * 3)]),
-                        (byte)(rgbValues[(column * stride) + (row * 3) + 1]),
-                        (byte)(rgbValues[(column * stride) + (row * 3) + 2])
-                        ));
-
-                    if (colorContainer.Count == 0)
-                    {
-                        colorContainer.Add(currentCheck);
-                    }
-                    else
-                    {
-                        foreach (Pixel element in colorContainer)
-                        {
-                            if (element.color == currentCheck.color)
-                            {
-                                element.count++;
-                                currentCheck.exist = true;
-                                break;
-                            }
-                        }
-
-                        if (!currentCheck.exist)
-                        {
-                            colorContainer.Add(currentCheck);
-                        }
-
-                    }
-
-
-                }
-            }
-            bitmap.UnlockBits(bitmapData);
-        }
+        
 
         public List<Wpf.Label> getColors(int amount, bool applyFilter, int filterThreshold = 0)
         {
@@ -167,7 +157,7 @@ namespace Alchemy_Engine
                             }   
                         }
 
-                        if(noSimilarColors)
+                        if(!noSimilarColors)//utuaj !
                         {
                             outputArray.Add(colorContainer[i].color);
                             if(outputArray.Count == amount)
@@ -226,11 +216,13 @@ namespace Alchemy_Engine
         public bool exist { get; set; }
         public int count { get; set; }
 
-        public Pixel(string color)
+        public Pixel(byte b, byte g, byte r)
         {
-            this.color = color;
+            this.color = "#" + r.ToString("X2") + g.ToString("X2") + b.ToString("X2");
             this.exist = false;
             this.count = 1;
         }
     }
+
+    
 }

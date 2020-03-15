@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -14,7 +16,7 @@ namespace Alchemy_Engine
     public partial class PaletteView : Window
     {
         private string filePath = null;
-        private AlchemyAnalyzer analyzer = null;
+        public AnalyzerResults results;
         public PaletteView()
         {
             InitializeComponent();
@@ -38,31 +40,34 @@ namespace Alchemy_Engine
 
         private async void btnSampleImageListener(object sender, RoutedEventArgs e)
         {
-            if(this.filePath != null)
+            btnSampleImage.Content = "Please wait";
+            this.results = await Task.Run(() => sampleProcess(this.filePath));
+            if((this.results.image != null)&&(this.results.colors != null))
             {
-                analyzer = new AlchemyAnalyzer(new Bitmap(this.filePath), 25);
-                analyzer.samplePaletteLock();
-                /*List<Label> outputLabelArray = analyzer.getColors(5, true, 80);
-
-                foreach(Label label in outputLabelArray)
-                {
-                    paletteGrid.Children.Add(label);
-                }
-
-                btnSaveImage.IsEnabled = true; 
-                */
+                btnSaveImage.IsEnabled = true;
             }
+            btnSampleImage.Content = "Finished";
+        }
 
-            
+        private AnalyzerResults sampleProcess(string filePath)
+        {
+            if(filePath != null)
+            {
+                AlchemyAnalyzer analyzer = new AlchemyAnalyzer(new Bitmap(filePath), 25);
+                analyzer.samplePaletteLock();
+                return analyzer.getOutput();
+            }
+            return new AnalyzerResults(null, null);
         }
 
         private void btnSaveImageListener(object sender, RoutedEventArgs e)
         {
-            if(this.analyzer != null)
-            {
-                Window exportPalette = new ExportView(analyzer.getPaletteImage(), analyzer.getPaletteLog());
-                exportPalette.Show();
-            }
+            Console.WriteLine(results.colors.ToString());
+            //imageHolder.Source = AlchemyConverter.bitmapToBitmapSource(results.image);
+            imageHolder.Source = AlchemyConverter.bitmapToBitmapSource(results.image);
+            
+            //Window exportPalette = new ExportView(analyzer.getPaletteImage(), analyzer.getPaletteLog());
+            //exportPalette.Show();
         }
     }
 }

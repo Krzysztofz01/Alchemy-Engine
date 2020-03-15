@@ -9,29 +9,21 @@ namespace Alchemy_Engine
 {
     class AlchemyAnalyzer
     {
-        public struct AnalyzerResults
-        {
-            public Bitmap image { get; private set; }
-            public List<string> colors { get; private set; }
-            public AnalyzerResults(Bitmap image, List<string>colors)
-            {
-                this.image = image;
-                this.colors = colors;
-            }
-        }
-
         private Bitmap bitmap;
+        private Bitmap originalSizedBitmap;
         private List<Pixel> colorContainer;
         
         public AlchemyAnalyzer(Bitmap bitmap)
         {
             this.bitmap = bitmap;
+            this.originalSizedBitmap = bitmap;
             this.colorContainer = new List<Pixel>();
         }
 
         public AlchemyAnalyzer(Bitmap bitmap, int downScale)
         {
             this.bitmap = new Bitmap(bitmap, (int)(bitmap.Width * downScale / 100), (int)(bitmap.Height * downScale / 100));
+            this.originalSizedBitmap = bitmap;
             this.colorContainer = new List<Pixel>();
         }
 
@@ -75,11 +67,6 @@ namespace Alchemy_Engine
                 }
                 this.bitmap.UnlockBits(bitmapData);
                 colorBubbleSort();
-                for (int r = 0; r < 5; r++)
-                {
-                    Console.WriteLine(colorContainer[r].color);
-                }
-                
             }
         }
 
@@ -131,7 +118,70 @@ namespace Alchemy_Engine
             }
         }
 
-        
+        public AnalyzerResults getOutput()
+        {
+            //Filter returns only one element need to fix it
+
+            //Output colors selection section
+            int filterThreshold = 20;
+
+            List<string> outputArray = new List<string>() { colorContainer[0].color };
+            AlchemyFilter filter = new AlchemyFilter();
+            bool filterCheck = true;
+
+            while (colorContainer.Count < 5)
+            {
+                for (int i = 0; i < colorContainer.Count; i++)
+                {
+                    filterCheck = true;
+                    for (int j = 0; j < outputArray.Count; j++)
+                    {
+                        if (filter.filterColorDifference(
+                            AlchemyConverter.hexToColor(colorContainer[i].color),
+                            AlchemyConverter.hexToColor(outputArray[j]), filterThreshold))
+                        {
+                            filterCheck = false;
+                            break;
+                        }
+
+                    }
+
+                    if (filterCheck)
+                    {
+                        outputArray.Add(colorContainer[i].color);
+                    }
+
+                    if (outputArray.Count == 5)
+                    {
+                        break;
+                    }
+                }
+                filterThreshold -= 5;
+            }
+
+            //Bitmap generate section
+            Bitmap outputImage = this.originalSizedBitmap;
+
+            int rectWidth = outputImage.Width / 5;
+            int rectHeight = outputImage.Height / 8;
+            int rectMargin = rectHeight / 9;
+            int center = (outputImage.Width / 2) - (rectWidth / 2);
+            int yOffset = rectMargin;
+
+            foreach(string color in outputArray)
+            {
+                using(Graphics graphics = Graphics.FromImage(outputImage))
+                {
+                    using(SolidBrush brush = new SolidBrush(AlchemyConverter.hexToColor(color)))
+                    {
+                        graphics.FillRectangle(brush, center, yOffset, rectWidth, rectHeight);
+                        yOffset += rectHeight + rectMargin;
+                    }
+                }
+            }
+
+            return new AnalyzerResults(outputImage, outputArray);
+        }
 
         public List<Wpf.Label> getColors(int amount, bool applyFilter, int filterThreshold = 0)
         {
@@ -207,6 +257,17 @@ namespace Alchemy_Engine
                 hexColors.Add(pixel.color);
             }
             return hexColors;
+        }
+    }
+
+    public struct AnalyzerResults
+    {
+        public Bitmap image { get; private set; }
+        public List<string> colors { get; private set; }
+        public AnalyzerResults(Bitmap image, List<string> colors)
+        {
+            this.image = image;
+            this.colors = colors;
         }
     }
 

@@ -4,11 +4,35 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Alchemy_Engine
 {
     class AlchemyConverter
     {
+        [DllImport("gdi32")]
+        static extern int DeleteObject(IntPtr o);
+        
+        public static BitmapSource bitmapToBitmapSource(Bitmap bitmap)
+        {
+            IntPtr ip = bitmap.GetHbitmap();
+            BitmapSource bs = null;
+            try
+            {
+                bs = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(ip,
+                   IntPtr.Zero, Int32Rect.Empty,
+                   System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+            }
+            finally
+            {
+                DeleteObject(ip);
+            }
+
+            return bs;
+        }
+
         //Convert Color struct to Hex string
         public static string colorToHex(Color color)
         {

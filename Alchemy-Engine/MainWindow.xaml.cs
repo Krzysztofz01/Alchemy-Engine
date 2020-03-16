@@ -10,6 +10,11 @@ namespace Alchemy_Engine
         public MainWindow()
         {
             InitializeComponent();
+            /* LUMETRI TEST SECTION
+            var lumetri = new AlchemyLumetri(new System.Drawing.Bitmap(@"D:\Projekty\Grafika\Zdjęcia do testów\test.jpg"));
+            lumetri.greyScale();
+            AlchemyConverter.bitmapToJpeg(lumetri.getItem(), @"D:\Projekty\Grafika\Zdjęcia do testów", 100);
+            */
         }
 
         private void btnPalleteListener(object sender, RoutedEventArgs e)

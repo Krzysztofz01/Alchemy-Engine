@@ -41,7 +41,7 @@ namespace Alchemy_Engine
                         lbl.Background = new SolidColorBrush(firstColor);
 
                         Grid.SetColumn(btnCopyFirst, 1);
-                        btnCopyFirst.Content = AlchemyConverter.mediaColorToHex(firstColor);
+                        btnCopyFirst.Content = AlchemyConverter.colorToHex(firstColor);
 
                         btnCopyFirst.Visibility = Visibility.Visible;
                     }
@@ -53,8 +53,8 @@ namespace Alchemy_Engine
                         lbl.Background = new LinearGradientBrush(firstColor, secondColor, 90.0);
 
                         Grid.SetColumn(btnCopyFirst, 0);
-                        btnCopyFirst.Content = AlchemyConverter.mediaColorToHex(firstColor);
-                        btnCopySecond.Content = AlchemyConverter.mediaColorToHex(firstColor);
+                        btnCopyFirst.Content = AlchemyConverter.colorToHex(firstColor);
+                        btnCopySecond.Content = AlchemyConverter.colorToHex(firstColor);
 
                         btnCopyFirst.Visibility = Visibility.Visible;
                         btnCopySecond.Visibility = Visibility.Visible;
@@ -67,12 +67,12 @@ namespace Alchemy_Engine
 
         private void btnCopyFirstListener(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(AlchemyConverter.mediaColorToHex(firstColor));
+            Clipboard.SetText(AlchemyConverter.colorToHex(firstColor));
         }
 
         private void btnCopySecondLIstener(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(AlchemyConverter.mediaColorToHex(secondColor));
+            Clipboard.SetText(AlchemyConverter.colorToHex(secondColor));
         }
     }
 }

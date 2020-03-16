@@ -35,5 +35,6 @@ namespace Alchemy_Engine
 
             return distanceRed + distanceGreen + distanceBlue;
         }
+
     }
 }

@@ -41,12 +41,20 @@ namespace Alchemy_Engine
         private async void btnSampleImageListener(object sender, RoutedEventArgs e)
         {
             btnSampleImage.Content = "Please wait";
+            btnSampleImage.IsEnabled = false;
+            btnSelectFile.IsEnabled = false;
             this.results = await Task.Run(() => sampleProcess(this.filePath));
             if((this.results.image != null)&&(this.results.colors != null))
             {
-                btnSaveImage.IsEnabled = true;
+                List<Label> labels = AlchemyAnalyzer.colorsToLabels(results.colors);
+                foreach(Label label in labels)
+                {
+                    paletteGrid.Children.Add(label);
+                }
+                btnSaveImage.IsEnabled = true;      
             }
             btnSampleImage.Content = "Finished";
+            btnSelectFile.IsEnabled = true;
         }
 
         private AnalyzerResults sampleProcess(string filePath)
@@ -62,12 +70,8 @@ namespace Alchemy_Engine
 
         private void btnSaveImageListener(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(results.colors.ToString());
-            //imageHolder.Source = AlchemyConverter.bitmapToBitmapSource(results.image);
-            imageHolder.Source = AlchemyConverter.bitmapToBitmapSource(results.image);
-            
-            //Window exportPalette = new ExportView(analyzer.getPaletteImage(), analyzer.getPaletteLog());
-            //exportPalette.Show();
+            Window exportPalette = new ExportView(results.image, results.colors);
+            exportPalette.Show();
         }
     }
 }

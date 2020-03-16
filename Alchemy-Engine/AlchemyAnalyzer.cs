@@ -120,17 +120,15 @@ namespace Alchemy_Engine
 
         public AnalyzerResults getOutput()
         {
-            //Filter returns only one element need to fix it
-
-            //Output colors selection section
-            int filterThreshold = 20;
+            int filterThreshold = 150;
 
             List<string> outputArray = new List<string>() { colorContainer[0].color };
             AlchemyFilter filter = new AlchemyFilter();
             bool filterCheck = true;
 
-            while (colorContainer.Count < 5)
+            while (outputArray.Count < 5)
             {
+                Console.WriteLine("colorCt count less than 5");
                 for (int i = 0; i < colorContainer.Count; i++)
                 {
                     filterCheck = true;
@@ -148,6 +146,7 @@ namespace Alchemy_Engine
 
                     if (filterCheck)
                     {
+                        Console.WriteLine("Add element to array output");
                         outputArray.Add(colorContainer[i].color);
                     }
 
@@ -159,12 +158,18 @@ namespace Alchemy_Engine
                 filterThreshold -= 5;
             }
 
+            foreach(string color in outputArray)
+            {
+                Console.WriteLine(color);
+            }
+            Console.WriteLine(colorContainer.Count.ToString() + "  " + outputArray.Count.ToString());
+
             //Bitmap generate section
             Bitmap outputImage = this.originalSizedBitmap;
 
             int rectWidth = outputImage.Width / 5;
-            int rectHeight = outputImage.Height / 8;
-            int rectMargin = rectHeight / 9;
+            int rectHeight = outputImage.Height / 6;
+            int rectMargin = rectHeight / 6;
             int center = (outputImage.Width / 2) - (rectWidth / 2);
             int yOffset = rectMargin;
 
@@ -181,6 +186,25 @@ namespace Alchemy_Engine
             }
 
             return new AnalyzerResults(outputImage, outputArray);
+        }
+
+        public static List<Wpf.Label> colorsToLabels(List<string> colors)
+        {
+            //Generate WPF Labels
+            List<Wpf.Label> outputLabels = new List<Wpf.Label>();
+            int rowOffset = 1;
+            foreach (string color in colors)
+            {
+                Wpf.Label lbl = new Wpf.Label();
+                Wpf.Grid.SetColumn(lbl, 2);
+                Wpf.Grid.SetRow(lbl, rowOffset);
+                Color tmpColor = AlchemyConverter.hexToColor(color);
+                lbl.Background = new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromRgb(tmpColor.R, tmpColor.G, tmpColor.B));
+                outputLabels.Add(lbl);
+                rowOffset += 2;
+            }
+            return outputLabels;
         }
 
         public List<Wpf.Label> getColors(int amount, bool applyFilter, int filterThreshold = 0)
@@ -207,7 +231,7 @@ namespace Alchemy_Engine
                             }   
                         }
 
-                        if(!noSimilarColors)//utuaj !
+                        if(!noSimilarColors)
                         {
                             outputArray.Add(colorContainer[i].color);
                             if(outputArray.Count == amount)

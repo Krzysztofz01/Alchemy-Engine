@@ -13,8 +13,15 @@ namespace Alchemy_Engine
     class AlchemyConverter
     {
         [DllImport("gdi32")]
-        static extern int DeleteObject(IntPtr o);
+        private static extern int DeleteObject(IntPtr o);
         
+        /* === COLORS === */
+
+        /// <summary>
+        /// Convert Bitmap object into BitmapSource object
+        /// </summary>
+        /// <param name="bitmap">Input Drawing Bitmap object</param>
+        /// <returns>BitmapSource object</returns>
         public static BitmapSource bitmapToBitmapSource(Bitmap bitmap)
         {
             IntPtr ip = bitmap.GetHbitmap();
@@ -33,29 +40,65 @@ namespace Alchemy_Engine
             return bs;
         }
 
-        //Convert Color struct to Hex string
+        /// <summary>
+        /// Convert Drawing Color object into hex string
+        /// </summary>
+        /// <param name="color">Color object</param>
+        /// <returns>Hex string</returns>
         public static string colorToHex(Color color)
         {
             return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
-        public static string mediaColorToHex(System.Windows.Media.Color color)
+        /// <summary>
+        /// Convert RGB int values into hex string
+        /// </summary>
+        /// <param name="R">Red int</param>
+        /// <param name="G">Green int</param>
+        /// <param name="B">Blue int</param>
+        /// <returns>Hex string</returns>
+        public static string colorToHex(int R, int G, int B)
+        {
+            return "#" + R.ToString("X2") + G.ToString("X2") + B.ToString("X2");
+        }
+
+        /// <summary>
+        /// Convert WinMedia Color object int hex string
+        /// </summary>
+        /// <param name="color">WinMedia Color object</param>
+        /// <returns>Hex string</returns>
+        public static string colorToHex(System.Windows.Media.Color color)
         {
             return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
-        public static string rgbToHex(byte b, byte g, byte r)
+        /// <summary>
+        /// Convert RGB (in that order as in memory -> BGR) byte values into hex values
+        /// </summary>
+        /// <param name="b">Blue byte</param>
+        /// <param name="g">Green byte</param>
+        /// <param name="r">Red byte</param>
+        /// <returns>Hex string</returns>
+        public static string colorToHex(byte b, byte g, byte r)
         {
             return "#" + r.ToString("X2") + g.ToString("X2") + b.ToString("X2");
         }
 
-        //Convert Hex string to Color object
+        /// <summary>
+        /// Convert hex string color into Color object
+        /// </summary>
+        /// <param name="color">Hex string</param>
+        /// <returns>Color object</returns>
         public static Color hexToColor(string color)
         {
             return ColorTranslator.FromHtml(color);
         }
 
-        //Convert Color struct to HSL struct (RGB to HSL)
+        /// <summary>
+        /// Convert Drawing.Color object into HSL struct
+        /// </summary>
+        /// <param name="color">Color object</param>
+        /// <returns>HSL struct</returns>
         public static HSL colorToHsl(Color color)
         {
             double h = 0.0;
@@ -110,7 +153,11 @@ namespace Alchemy_Engine
             return new HSL(h, s, l);
         }
 
-        //Convert HSL struct to Color struct (HSL to RGB)
+        /// <summary>
+        /// Convert HSL struct into Drawing.Color object
+        /// </summary>
+        /// <param name="hsl">HSL struct</param>
+        /// <returns>Color object</returns>
         public static Color hslToColor(HSL hsl)
         {
             double p2 = 0.0;
@@ -176,8 +223,14 @@ namespace Alchemy_Engine
             return q1;
         }
 
-        //FILE 
+        /* === FILE === */
         
+        /// <summary>
+        /// Save bitmap as JPEG file
+        /// </summary>
+        /// <param name="bitmap">Bitmap object</param>
+        /// <param name="destinationPath">File path</param>
+        /// <param name="quality">JPEG compression</param>
         public static void bitmapToJpeg(Bitmap bitmap, string destinationPath, int quality)
         {
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
@@ -196,6 +249,12 @@ namespace Alchemy_Engine
             bitmap.Save(destinationPath + "\\bitmapPalette.jpg", ici, ep);
         }
 
+        /// <summary>
+        /// Convert * image file into JPEG file
+        /// </summary>
+        /// <param name="filePath">Source path</param>
+        /// <param name="destinationPath">Save path</param>
+        /// <param name="quality">JPEG compression</param>
         public static void imageToJpeg(string filePath, string destinationPath, int quality)
         {
             Bitmap bitmap = (Bitmap)Image.FromFile(filePath);
@@ -215,6 +274,12 @@ namespace Alchemy_Engine
             bitmap.Save(destinationPath + "\\convertedImage.jpg", ici, ep);
         }
 
+        /// <summary>
+        /// Save bitmap as PNG file
+        /// </summary>
+        /// <param name="bitmap">Bitmap object</param>
+        /// <param name="destinationPath">File path</param>
+        /// <param name="transparency">Transparency settings (1 = default, 2 = on white, 3 = on black)</param>
         public static void bitmapToPng(Bitmap bitmap, string destinationPath, int transparency)
         {
             switch (transparency)
@@ -239,6 +304,12 @@ namespace Alchemy_Engine
             }
         }
 
+        /// <summary>
+        /// Convert * image file into PNG file
+        /// </summary>
+        /// <param name="filePath">Source file path</param>
+        /// <param name="destinationPath">Save file path</param>
+        /// <param name="transparency">Transparency settings (1 = default, 2 = on white, 3 = on black)</param>
         public static void imageToPng(string filePath, string destinationPath, int transparency)
         {
             Bitmap bitmap = (Bitmap)Image.FromFile(filePath);
@@ -261,17 +332,32 @@ namespace Alchemy_Engine
             }
         }
 
+        /// <summary>
+        /// Save bitmap as BMP file
+        /// </summary>
+        /// <param name="bitmap">Bitmap object</param>
+        /// <param name="destination">File path</param>
         public static void bitmapToBmp(Bitmap bitmap, string destination)
         {
             bitmap.Save(destination + "\\convertedImage.bmp", ImageFormat.Bmp);
         }
 
+        /// <summary>
+        /// Convert * image into BMP file
+        /// </summary>
+        /// <param name="filePath">Source file path</param>
+        /// <param name="destination">Save file path</param>
         public static void imageToBmp(string filePath, string destination)
         {
             Bitmap bitmap = (Bitmap)Image.FromFile(filePath);
             bitmap.Save(destination + "\\convertedImage.bmp");
         }
 
+        /// <summary>
+        /// Convert list of colors into JSON file
+        /// </summary>
+        /// <param name="array">List of colors</param>
+        /// <param name="destination">File path</param>
         public static void colorContainerToJson(List<string> array, string destination)
         {
             File.WriteAllText(destination + "\\paletteLog.json", JsonConvert.SerializeObject(array, Formatting.Indented));

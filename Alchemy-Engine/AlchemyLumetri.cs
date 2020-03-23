@@ -44,6 +44,12 @@ namespace Alchemy_Engine
             return processingBackup[processingBackup.Count - 1];
         }
 
+        public Bitmap getItemOffset(int offset)
+        {
+            this.processingBackup.Add(processingBackup[processingBackup.Count - 1 + offset]);
+            return getItem();
+        }
+
         public void invertColors()
         {
             Bitmap bmp = getItem();

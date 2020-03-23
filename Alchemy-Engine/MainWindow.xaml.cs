@@ -34,5 +34,11 @@ namespace Alchemy_Engine
             Window solidGeneretor = new GeneratorView();
             solidGeneretor.Show();
         }
+
+        private void btnLumetriListener(object sender, RoutedEventArgs e)
+        {
+            Window lumetriEditor = new LumetriView();
+            lumetriEditor.Show();
+        }
     }
 }

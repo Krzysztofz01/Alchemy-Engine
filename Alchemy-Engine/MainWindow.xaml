@@ -11,6 +11,6 @@
         <Button x:Name="btnPallete" Content="Palette Generator" Margin="10,236,10,145" Click="btnPalleteListener"/>
         <Button x:Name="btnCovert" Content="Convert Image" Margin="10,281,10,100" Click="btnConvertListener"/>
         <Button x:Name="btnGenerator" Content="Solid Generator" Margin="10,326,10,55" Click="btnGeneratorListener"/>
-        <Button x:Name="btnLumetri" Content="Lumetri Editor" Margin="10,371,10,10"/>
+        <Button x:Name="btnLumetri" Content="Lumetri Editor" Margin="10,371,10,10" Click="btnLumetriListener"/>
     </Grid>
 </Window>

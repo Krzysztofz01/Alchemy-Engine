@@ -1,0 +1,7 @@
+CREATE TABLE palettes (
+	[id] INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
+	[base] VARCHAR(8) NOT NULL,
+	[colorArray] VARCHAR(150) NOT NULL,
+	[display] BIT DEFAULT 1,
+    [createDate] DATETIME2(6) DEFAULT GETDATE()
+);

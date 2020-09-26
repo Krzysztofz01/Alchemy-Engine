@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "QuMB1CRTN3c4ZvWkvOQc6giMlPAcEiIfditDO2dyIbQyBqoysIdEroOutdLQPedDswan7FYZQu0WfeIuzwXf2A==",
+  "success": true,
+  "projectFilePath": "D:\\Projekty\\Alchemy-Engine\\Microservice (ASP.NET)\\ms_alchemy_api\\ms_alchemy_api\\ms_alchemy_api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\User1\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+  ],
+  "logs": []
+}

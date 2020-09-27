@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ms_alchemy_api.Models;
 
 namespace ms_alchemy_api
 {
@@ -24,6 +26,9 @@ namespace ms_alchemy_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //SQL Server connection string dependency injection
+            services.AddDbContext<AlchemyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Alchemy")));
+
             services.AddControllers();
         }
 

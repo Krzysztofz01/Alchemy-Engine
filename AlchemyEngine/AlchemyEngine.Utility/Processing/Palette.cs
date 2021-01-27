@@ -186,5 +186,59 @@ namespace AlchemyEngine.Utility.Processing
             return image;
         }
 
+        private static IEnumerable<RGB> ToEnumerableRGB(IEnumerable<HSL> colors)
+        {
+            var rgbList = new List<RGB>();
+            foreach(var hsl in colors)
+            {
+                rgbList.Add(hsl.ToRGB());
+            }
+            return rgbList;
+        }
+
+        public static IEnumerable<RGB> GetMonochromaticValues(RGB baseValue)
+        {
+            var baseHue = baseValue.ToHSL().H;
+            var random = new Random();
+            var colorContainer = new List<HSL>() { baseValue.ToHSL() };
+
+            colorContainer.Add(new HSL(baseHue, 100, random.Next(85, 93)));
+            colorContainer.Add(new HSL(baseHue, 100, random.Next(45, 55)));
+            colorContainer.Add(new HSL(baseHue, random.Next(85, 95), random.Next(65, 50)));
+            colorContainer.Add(new HSL(baseHue, random.Next(77, 83), random.Next(30, 50)));
+            colorContainer.Add(new HSL(baseHue, random.Next(67, 63), random.Next(30, 50)));
+            colorContainer.Add(new HSL(baseHue, random.Next(17, 23), random.Next(50, 80)));
+
+            return ToEnumerableRGB(colorContainer);
+        }
+
+        public static IEnumerable<RGB> GetComplementaryValues(RGB baseValue)
+        {
+            var colorContainer = new List<HSL>();
+            var random = new Random();
+            
+            var baseColor = baseValue.ToHSL();
+            colorContainer.Add(baseColor);
+            colorContainer.Add(new HSL(
+                baseColor.H, 
+                (baseColor.S > 70) ? baseColor.S + random.Next(10, 25) : Math.Abs(baseColor.S - random.Next(15, 30)), 
+                baseColor.L));
+            colorContainer.Add(new HSL(baseColor.H, baseColor.S, Math.Abs(baseColor.L - random.Next(10, 25))));
+            
+
+            var baseColorInverted = new HSL(
+                Math.Abs(baseColor.H - 137),
+                random.Next((int)baseColor.S - 3, (int)baseColor.S + 3),
+                random.Next((int)baseColor.L - 3, (int)baseColor.L + 3));
+            colorContainer.Add(baseColorInverted);
+            colorContainer.Add(new HSL(baseColorInverted.H, 100, 50));
+            colorContainer.Add(new HSL(
+                baseColorInverted.H,
+                (baseColorInverted.S > 70) ? baseColorInverted.S + random.Next(10, 25) : Math.Abs(baseColorInverted.S - random.Next(15, 30)),
+                baseColorInverted.L));
+            colorContainer.Add(new HSL(baseColorInverted.H, baseColorInverted.S, Math.Abs(baseColorInverted.L - random.Next(10, 25))));
+
+            return ToEnumerableRGB(colorContainer);
+        }
     }
 }

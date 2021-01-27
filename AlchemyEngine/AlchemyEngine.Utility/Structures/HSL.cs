@@ -39,5 +39,11 @@ namespace AlchemyEngine.Utility.Structures
         {
             return Convert.HslToColor(this);
         }
+
+        public static HSL GetRandom()
+        {
+            var rnd = new System.Random();
+            return new HSL(rnd.Next(1, 365), rnd.Next(40, 55), rnd.Next(40, 55));
+        }
     }
 }

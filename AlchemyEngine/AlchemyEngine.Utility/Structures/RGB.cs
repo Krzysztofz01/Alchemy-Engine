@@ -39,5 +39,11 @@ namespace AlchemyEngine.Utility.Structures
         {
             return Convert.RgbToColor(this);
         }
+
+        public static RGB GetRandom()
+        {
+            var rnd = new System.Random();
+            return new RGB((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+        }
     }
 }

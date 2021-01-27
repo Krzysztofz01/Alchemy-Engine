@@ -174,11 +174,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projekty\\alchemygt\\Alchemy-Engine\\AlchemyEngine\\Test\\Test.csproj",
+      "projectUniqueName": "D:\\Projekty\\Alchemy-Engine\\AlchemyEngine\\Test\\Test.csproj",
       "projectName": "Test",
-      "projectPath": "D:\\Projekty\\alchemygt\\Alchemy-Engine\\AlchemyEngine\\Test\\Test.csproj",
+      "projectPath": "D:\\Projekty\\Alchemy-Engine\\AlchemyEngine\\Test\\Test.csproj",
       "packagesPath": "C:\\Users\\User1\\.nuget\\packages\\",
-      "outputPath": "D:\\Projekty\\alchemygt\\Alchemy-Engine\\AlchemyEngine\\Test\\obj\\",
+      "outputPath": "D:\\Projekty\\Alchemy-Engine\\AlchemyEngine\\Test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -199,8 +199,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "D:\\Projekty\\alchemygt\\Alchemy-Engine\\AlchemyEngine\\AlchemyEngine.Utility\\AlchemyEngine.Utility.csproj": {
-              "projectPath": "D:\\Projekty\\alchemygt\\Alchemy-Engine\\AlchemyEngine\\AlchemyEngine.Utility\\AlchemyEngine.Utility.csproj"
+            "D:\\Projekty\\Alchemy-Engine\\AlchemyEngine\\AlchemyEngine.Utility\\AlchemyEngine.Utility.csproj": {
+              "projectPath": "D:\\Projekty\\Alchemy-Engine\\AlchemyEngine\\AlchemyEngine.Utility\\AlchemyEngine.Utility.csproj"
             }
           }
         }

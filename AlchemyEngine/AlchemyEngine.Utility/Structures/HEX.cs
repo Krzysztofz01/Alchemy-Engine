@@ -40,5 +40,11 @@ namespace AlchemyEngine.Utility.Structures
         {
             return Convert.HexToColor(this);
         }
+
+        public static HEX GetRandom()
+        {
+            var rnd = new System.Random();
+            return new HEX(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+        }
     }
 }

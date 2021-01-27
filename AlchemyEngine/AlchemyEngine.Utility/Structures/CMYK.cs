@@ -41,5 +41,11 @@ namespace AlchemyEngine.Utility.Structures
         {
             return Convert.CmykToColor(this);
         }
+
+        public static CMYK GetRandom()
+        {
+            var rnd = new System.Random();
+            return new CMYK(rnd.Next(0, 100), rnd.Next(0, 100), rnd.Next(0, 100), rnd.Next(0, 100));
+        }
     }
 }

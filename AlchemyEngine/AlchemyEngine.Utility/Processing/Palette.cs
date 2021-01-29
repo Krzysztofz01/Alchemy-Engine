@@ -29,7 +29,7 @@ namespace AlchemyEngine.Utility.Processing
             for(int y = 0; y < heightInPixels; y++)
             {
                 int currentLine = y * bitmapData.Stride;
-                for(int x = 0; x < widthInPixels; x = x + bytesPerPixel)
+                for(int x = 0; x < widthInPixels; x += bytesPerPixel)
                 {
                     var currentPixel = new RGB(pixels[currentLine + x + 2], pixels[currentLine + x + 1], pixels[currentLine + x]);
 

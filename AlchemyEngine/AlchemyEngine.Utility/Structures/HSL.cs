@@ -15,9 +15,9 @@ namespace AlchemyEngine.Utility.Structures
 
         public HSL(double H, double S, double L)
         {
-            this.H = H;
-            this.S = S;
-            this.L = L;
+            this.H = System.Math.Abs(H) % 360;
+            this.S = (double)(System.Math.Max(System.Math.Min(100.0, S), 0.0));
+            this.L = (double)(System.Math.Max(System.Math.Min(100.0, L), 0.0));
         }
 
         public CMYK ToCMYK()

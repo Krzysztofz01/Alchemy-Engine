@@ -4,6 +4,9 @@ namespace AlchemyEngine.Utility.Processing
 {
     public static class Compression
     {
+        //Server conpression
+        
+
         public static Bitmap Pixelate(Bitmap input, int pixelSize)
         {
             var pixelatedBitmap = new Bitmap(input.Width, input.Height);

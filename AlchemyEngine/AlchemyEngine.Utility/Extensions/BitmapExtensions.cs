@@ -275,6 +275,76 @@ namespace AlchemyEngine.Utility.Extensions
 
             return Conv3x3(bmp, matrix);
         }
+
+        public static Bitmap GaussianBlur(this Bitmap bmp, int weight)
+        {
+            var matrix = new ConvMatrix();
+            matrix.SetAll(1);
+            matrix.TopMid = 2;
+            matrix.MidLeft = 2;
+            matrix.Pixel = weight + 4;
+            matrix.MidRight = 2;
+            matrix.BotMid = 2;
+            matrix.Factor = weight + 16;
+
+            return Conv3x3(bmp, matrix);
+        }
+
+        public static Bitmap Sharpen(this Bitmap bmp, int weight)
+        {
+            var matrix = new ConvMatrix();
+            matrix.TopMid = -2;
+            matrix.MidLeft = -2;
+            matrix.Pixel = weight + 11;
+            matrix.MidRight = -2;
+            matrix.BotMid = -2;
+            matrix.Factor = weight + 3;
+
+            return Conv3x3(bmp, matrix);
+        }
+
+        public static Bitmap MeanRemove(this Bitmap bmp, int weight)
+        {
+            var matrix = new ConvMatrix();
+            matrix.SetAll(-1);
+            matrix.Pixel = weight + 9;
+            matrix.Factor = weight + 1;
+
+            return Conv3x3(bmp, matrix);
+        }
+
+        public static Bitmap Embose(this Bitmap bmp, int weight)
+        {
+            var matrix = new ConvMatrix();
+            matrix.SetAll(-1);
+            matrix.TopMid = 0;
+            matrix.MidLeft = 0;
+            matrix.Pixel = weight + 4;
+            matrix.MidRight = 0;
+            matrix.BotMid = 0;
+            matrix.Factor = weight + 1;
+            matrix.Offset = 127;
+
+            return Conv3x3(bmp, matrix);
+        }
+
+        public static Bitmap EdgeDetection(this Bitmap bmp, int weight)
+        {
+            var matrix = new ConvMatrix();
+            matrix.TopLeft = 1;
+            matrix.TopMid = 1;
+            matrix.TopRight = 1;
+            matrix.MidLeft = 0;
+            matrix.Pixel = weight + 0;
+            matrix.MidRight = 0;
+            matrix.BotLeft = -1;
+            matrix.BotMid = -1;
+            matrix.BotRight = -1;
+            matrix.Factor = weight + 1;
+            matrix.Offset = 127;
+
+            return Conv3x3(bmp, matrix);
+        }
     }
 
     public class ConvMatrix

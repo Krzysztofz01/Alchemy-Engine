@@ -4,5 +4,7 @@
     {
         //Shift pixels
         //Chromatic shift
+        //Noise
+        //VHS
     }
 }

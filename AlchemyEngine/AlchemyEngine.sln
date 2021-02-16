@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlchemyEngine.Utility", "AlchemyEngine.Utility\AlchemyEngine.Utility.csproj", "{A658E74D-0523-40D6-93A6-4BFAAC834D65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{13F9C135-BEC5-4B7A-BA9A-C9781E11D8A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{13F9C135-BEC5-4B7A-BA9A-C9781E11D8A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlchemyEngine.Tests", "AlchemyEngine.Tests\AlchemyEngine.Tests.csproj", "{7FF2B5BE-9E22-4CFF-991A-3FB486ED1542}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{13F9C135-BEC5-4B7A-BA9A-C9781E11D8A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13F9C135-BEC5-4B7A-BA9A-C9781E11D8A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13F9C135-BEC5-4B7A-BA9A-C9781E11D8A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FF2B5BE-9E22-4CFF-991A-3FB486ED1542}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FF2B5BE-9E22-4CFF-991A-3FB486ED1542}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FF2B5BE-9E22-4CFF-991A-3FB486ED1542}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FF2B5BE-9E22-4CFF-991A-3FB486ED1542}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

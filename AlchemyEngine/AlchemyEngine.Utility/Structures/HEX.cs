@@ -13,7 +13,7 @@ namespace AlchemyEngine.Utility.Structures
 
         public HEX(string hexValue)
         {
-            Value = hexValue;
+            Value = hexValue.ToUpper();
         }
 
         public HEX(int R, int G, int B)
@@ -45,6 +45,11 @@ namespace AlchemyEngine.Utility.Structures
         {
             var rnd = new System.Random();
             return new HEX(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+        }
+
+        public override string ToString()
+        {
+            return Value;
         }
     }
 }

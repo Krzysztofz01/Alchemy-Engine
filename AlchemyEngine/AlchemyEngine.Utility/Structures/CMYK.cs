@@ -47,5 +47,10 @@ namespace AlchemyEngine.Utility.Structures
             var rnd = new System.Random();
             return new CMYK(rnd.Next(0, 100), rnd.Next(0, 100), rnd.Next(0, 100), rnd.Next(0, 100));
         }
+
+        public override string ToString()
+        {
+            return $"C: {C}%, M: {M}%, Y: {Y}%, K: {K}%";
+        }
     }
 }

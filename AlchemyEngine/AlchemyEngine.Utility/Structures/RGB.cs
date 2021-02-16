@@ -45,5 +45,10 @@ namespace AlchemyEngine.Utility.Structures
             var rnd = new System.Random();
             return new RGB((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
         }
+
+        public override string ToString()
+        {
+            return $"R: {R}, G: {G}, B: {B}";
+        }
     }
 }

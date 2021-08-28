@@ -18,19 +18,19 @@ namespace AlchemyEngine.Structures
 
         public Cmyk(float cyan, float magenta, float yellow, float keyColor)
         {
-            _cyan = cyan;
-            _magenta = magenta;
-            _yellow = yellow;
-            _key = keyColor;
+            SetCyan(cyan);
+            SetMagenta(magenta);
+            SetYellow(yellow);
+            SetKey(keyColor);
         }
 
         public static Cmyk White => new Cmyk(0, 0, 0, 0);
-        public static Cmyk Black => new Cmyk(0, 0, 0, 100);
+        public static Cmyk Black => new Cmyk(0, 0, 0, 1);
 
-        public float GetCyan() => _cyan;
-        public float GetMagenta() => _magenta;
-        public float GetYellow() => _yellow;
-        public float GetKey() => _key;
+        public float Cyan => _cyan;
+        public float Magenta => _magenta;
+        public float Yellow => _yellow;
+        public float Key => _key;
 
         public Cmyk SetCyan(float value)
         {
@@ -87,6 +87,25 @@ namespace AlchemyEngine.Structures
         public Hsl ToHsl()
         {
             return ToColor().ToHsl();
+        }
+
+        public override string ToString()
+        {
+            return $"C: {_cyan} M: {_magenta} Y: {_yellow} K: {_key}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj != null &&
+                _cyan == ((Cmyk)obj)._cyan &&
+                _yellow == ((Cmyk)obj)._yellow &&
+                _magenta == ((Cmyk)obj)._magenta &&
+                _key == ((Cmyk)obj)._key;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

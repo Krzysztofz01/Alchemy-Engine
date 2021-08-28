@@ -17,11 +17,12 @@ namespace AlchemyEngine.Extensions
             float green = color.G / 255.0f;
             float blue = color.B / 255.0f;
 
-            float k = 1.0f - Math.Max(Math.Max(red, green), blue);
+            float k = Math.Min(1.0f - red, Math.Min(1.0f - green, 1.0f - blue));
+            float kDiff = 1.0f - k;
 
-            float c = (1.0f - red - k) / (1.0f - k);
-            float m = (1.0f - green - k) / (1.0f - k);
-            float y = (1.0f - blue - k) / (1.0f - k);
+            float c = (kDiff > 0) ? (1.0f - red - k) / kDiff : 0;
+            float m = (kDiff > 0) ? (1.0f - green - k) / kDiff : 0;
+            float y = (kDiff > 0) ? (1.0f - blue - k) / kDiff : 0;
 
             return new Cmyk(c, m, y, k);
         }

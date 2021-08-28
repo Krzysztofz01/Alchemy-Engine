@@ -33,55 +33,40 @@ namespace AlchemyEngine.Extensions
             float green = color.G / 255.0f;
             float blue = color.B / 255.0f;
 
-            float minimalVal = Math.Min(Math.Min(red, green), blue);
-            float maximalVal = Math.Max(Math.Max(red, green), blue);
-            float deltaVal = maximalVal - minimalVal;
+            float min = Math.Min(red, Math.Min(green, blue));
+            float max = Math.Max(red, Math.Max(green, blue));
+            float delta = max - min;
 
-            float h, s;
-            float l = (maximalVal + maximalVal) / 2;
+            float lightness = (max + min) / 2.0f;
+            float saturation = 0.0f;
+            int hue = 0;
 
-            if (Math.Abs(deltaVal - 0) < float.Epsilon)
+            if (delta != 0)
             {
-                h = 0;
-                s = 0;
-            }
-            else
-            {
-                if (l < 0.5)
+                saturation = (lightness <= 0.5) ? (delta / (max + min)) : (delta / (2 - max - min));
+
+                float fHue;
+
+                if (red == max)
                 {
-                    s = deltaVal / (maximalVal + maximalVal);
+                    fHue = ((green - blue) / 6) / delta;
+                }
+                else if (green == max)
+                {
+                    fHue = (1.0f / 3) + ((blue - red) / 6) / delta;
                 }
                 else
                 {
-                    s = deltaVal / (2.0f - maximalVal - minimalVal);
+                    fHue = (2.0f / 3) + ((red - green) / 6) / delta;
                 }
 
-                float deltaRed = ((maximalVal - red) / 6.0f + deltaVal / 2.0f) / deltaVal;
-                float deltaGreen = ((maximalVal - green) / 6.0f + deltaVal / 2.0f) / deltaVal;
-                float deltaBlue = ((maximalVal - blue) / 6.0f + deltaVal / 2.0f) / deltaVal;
-            
-                if (Math.Abs(red - maximalVal) < float.Epsilon)
-                {
-                    h = deltaBlue - deltaGreen;
-                }
-                else if (Math.Abs(green - maximalVal) < float.Epsilon)
-                {
-                    h = 1.0f / 3.0f + deltaRed - deltaBlue;
-                }
-                else if (Math.Abs(blue - maximalVal) < float.Epsilon)
-                {
-                    h = 2.0f / 3.0f + deltaGreen - deltaRed;
-                }
-                else
-                {
-                    h = 0.0f;
-                }
+                if (fHue < 0) fHue += 1;
+                if (fHue > 1) fHue -= 1;
 
-                if (h < 0.0f) h += 1.0f;
-                if (h > 1.0f) h -= 1.0f;
+                hue = (int)(fHue * 360);
             }
 
-            return new Hsl(h, s, l);
+            return new Hsl(hue, saturation, lightness);
         }
     }
 }

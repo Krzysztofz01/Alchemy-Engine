@@ -1,11 +1,6 @@
 ﻿using AlchemyEngine.Structures;
 using AlchemyEngine.Extensions;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace AlchemyEngine.Test
@@ -23,6 +18,16 @@ namespace AlchemyEngine.Test
         }
 
         [Fact]
+        public void CustomWhiteRgbShouldBeWhiteHsl()
+        {
+            var whiteHsl = Hsl.White;
+
+            var whiteColor = Color.FromArgb(255, 255, 255);
+
+            Assert.Equal(whiteHsl, whiteColor.ToHsl());
+        }
+
+        [Fact]
         public void CustomBlackRgbShouldBeBlackCmyk()
         {
             var blackCmyk = Cmyk.Black;
@@ -31,7 +36,17 @@ namespace AlchemyEngine.Test
 
             Assert.Equal(blackCmyk, blackColor.ToCmyk());
         }
-        
+
+        [Fact]
+        public void CustomBlackRgbShouldBeBlackHsl()
+        {
+            var blackHsl = Hsl.Black;
+
+            var blackColor = Color.FromArgb(0, 0, 0);
+
+            Assert.Equal(blackHsl, blackColor.ToHsl());
+        }
+
         [Fact]
         public void CustomRedRgbShouldBeRedCmyk()
         {
@@ -41,5 +56,16 @@ namespace AlchemyEngine.Test
 
             Assert.Equal(redCmyk, redColor.ToCmyk());
         }
+
+        [Fact]
+        public void CustomRedRgbShouldBeRedHsl()
+        {
+            var redHsl = new Hsl(0, 1.0f, 0.5f);
+
+            var redColor = Color.FromArgb(255, 0, 0);
+
+            Assert.Equal(redHsl, redColor.ToHsl());
+        }
+
     }
 }

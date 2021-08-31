@@ -27,6 +27,16 @@ namespace AlchemyEngine.Test
         }
 
         [Fact]
+        public void StaticWhiteCmykShouldBeWhiteYCbCr()
+        {
+            var whiteYCbCr = YCbCr.White;
+
+            var whiteCmyk = Cmyk.White;
+
+            Assert.Equal(whiteYCbCr, whiteCmyk.ToYCbCr());
+        }
+
+        [Fact]
         public void StaticBlackCmykShouldBeWhiteRgb()
         {
             var blackColor = Color.FromArgb(0, 0, 0);
@@ -47,6 +57,16 @@ namespace AlchemyEngine.Test
         }
 
         [Fact]
+        public void StaticBlackCmykShouldBeBlackYCbCr()
+        {
+            var blackYCbCr = YCbCr.Black;
+
+            var blackCmyk = Cmyk.Black;
+
+            Assert.Equal(blackYCbCr, blackCmyk.ToYCbCr());
+        }
+
+        [Fact]
         public void CustomRedCmykShouldBeRedRgb()
         {
             var redColor = Color.FromArgb(255, 0, 0);
@@ -64,6 +84,16 @@ namespace AlchemyEngine.Test
             var redCmyk = new Cmyk(0.0f, 1.0f, 1.0f, 0.0f);
 
             Assert.Equal(redHsl, redCmyk.ToHsl());
+        }
+
+        [Fact]
+        public void CustomRedCmykShouldBeRedYCbCr()
+        {
+            var redYCbCr = new YCbCr(76, 84, 255);
+
+            var redCymk = new Cmyk(0.0f, 1.0f, 1.0f, 0.0f);
+
+            Assert.Equal(redYCbCr, redCymk.ToYCbCr());
         }
     }
 }

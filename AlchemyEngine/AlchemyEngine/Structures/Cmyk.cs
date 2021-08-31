@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace AlchemyEngine.Structures
 {
-    public class Cmyk : IConvertableColor
+    public class Cmyk : IConvertableColor, IRandomColor<Cmyk>
     {
         protected float _cyan;
         protected float _magenta;
@@ -18,10 +18,7 @@ namespace AlchemyEngine.Structures
 
         public Cmyk(float cyan, float magenta, float yellow, float keyColor)
         {
-            SetCyan(cyan);
-            SetMagenta(magenta);
-            SetYellow(yellow);
-            SetKey(keyColor);
+            SetCyan(cyan).SetMagenta(magenta).SetYellow(yellow).SetKey(keyColor);
         }
 
         public static Cmyk White => new Cmyk(0, 0, 0, 0);
@@ -89,6 +86,11 @@ namespace AlchemyEngine.Structures
             return ToColor().ToHsl();
         }
 
+        public YCbCr ToYCbCr()
+        {
+            return ToColor().ToYCbCr();
+        }
+
         public override string ToString()
         {
             return $"C: {_cyan} M: {_magenta} Y: {_yellow} K: {_key}";
@@ -106,6 +108,17 @@ namespace AlchemyEngine.Structures
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public Cmyk GetRandom()
+        {
+            var rnd = new Random();
+
+            return new Cmyk()
+                .SetCyan((float)rnd.NextDouble())
+                .SetMagenta((float)rnd.NextDouble())
+                .SetYellow((float)rnd.NextDouble())
+                .SetKey((float)rnd.NextDouble());
         }
     }
 }

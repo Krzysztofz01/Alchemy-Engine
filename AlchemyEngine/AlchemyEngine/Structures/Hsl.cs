@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace AlchemyEngine.Structures
 {
-    public class Hsl : IConvertableColor
+    public class Hsl : IConvertableColor, IRandomColor<Hsl>
     {
         protected int _hue;
         protected float _saturation;
@@ -17,9 +17,7 @@ namespace AlchemyEngine.Structures
 
         public Hsl(int hue, float saturation, float lightness)
         {
-            _hue = hue;
-            _saturation = saturation;
-            _lightness = lightness;
+            SetHue(hue).SetSaturation(saturation).SetLightness(lightness);
         }
 
         public static Hsl White => new Hsl(0, 0f, 1f);
@@ -100,6 +98,11 @@ namespace AlchemyEngine.Structures
             return this;
         }
 
+        public YCbCr ToYCbCr()
+        {
+            return ToColor().ToYCbCr();
+        }
+
         public override string ToString()
         {
             return $"H: {_hue} S: {_saturation} L:{_lightness}";
@@ -128,6 +131,16 @@ namespace AlchemyEngine.Structures
             if ((3 * vCH) < 2) return (vA + (vB - vA) * ((2.0f / 3) - vCH) * 6);
 
             return vA;
+        }
+
+        public Hsl GetRandom()
+        {
+            var rnd = new Random();
+
+            return new Hsl()
+                .SetHue(rnd.Next(0, 365))
+                .SetSaturation((float)rnd.NextDouble())
+                .SetLightness((float)rnd.NextDouble());
         }
     }
 }

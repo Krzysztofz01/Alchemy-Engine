@@ -68,5 +68,14 @@ namespace AlchemyEngine.Extensions
 
             return new Hsl(hue, saturation, lightness);
         }
+
+        public static YCbCr ToYCbCr(this Color color)
+        {
+            int y = (int)(0 + (0.299f * color.R) + (0.587f * color.G) + (0.114f * color.B));
+            int cb = (int)(128 - (0.168736f * color.R) - (0.331264f * color.G) + (0.5f * color.B));
+            int cr = (int)(128 + (0.5f * color.R) - (0.418688f * color.G) - (0.081312f * color.B));
+
+            return new YCbCr(y, cb, cr);
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace AlchemyEngine.Abstraction
         Color ToColor();
         Cmyk ToCmyk();
         Hsl ToHsl();
+        YCbCr ToYCbCr();
     }
 }

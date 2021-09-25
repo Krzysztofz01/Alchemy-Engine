@@ -24,5 +24,13 @@ namespace AlchemyEngine.Processing
 
             return cyanDistance + magentaDistance + yelloDistance + keyDistance;
         }
+
+        public static float Distance(Hsl a, Hsl b)
+        {
+            Color aRgb = a.ToColor();
+            Color bRgb = b.ToColor();
+
+            return Distance(aRgb, bRgb);
+        }
     }
 }

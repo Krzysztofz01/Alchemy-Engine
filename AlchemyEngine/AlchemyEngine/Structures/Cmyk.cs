@@ -5,18 +5,20 @@ using System.Drawing;
 
 namespace AlchemyEngine.Structures
 {
-    public class Cmyk : IConvertableColor, IRandomColor<Cmyk>
+    public class Cmyk : IConvertableColor
     {
-        protected float _cyan;
-        protected float _magenta;
-        protected float _yellow;
-        protected float _key;
+        protected int _precision = 2;
+
+        protected double _cyan;
+        protected double _magenta;
+        protected double _yellow;
+        protected double _key;
 
         public Cmyk()
         {
         }
 
-        public Cmyk(float cyan, float magenta, float yellow, float keyColor)
+        public Cmyk(double cyan, double magenta, double yellow, double keyColor)
         {
             SetCyan(cyan).SetMagenta(magenta).SetYellow(yellow).SetKey(keyColor);
         }
@@ -24,54 +26,67 @@ namespace AlchemyEngine.Structures
         public static Cmyk White => new Cmyk(0, 0, 0, 0);
         public static Cmyk Black => new Cmyk(0, 0, 0, 1);
 
-        public float Cyan => _cyan;
-        public float Magenta => _magenta;
-        public float Yellow => _yellow;
-        public float Key => _key;
+        public double Cyan => _cyan;
+        public double Magenta => _magenta;
+        public double Yellow => _yellow;
+        public double Key => _key;
 
-        public Cmyk SetCyan(float value)
+        public Cmyk SetCyan(double value)
         {
+            value = ApplyPrecision(value);
+
             ValidateValue(value);
             _cyan = value;
 
             return this;
         }
 
-        public Cmyk SetMagenta(float value)
+        public Cmyk SetMagenta(double value)
         {
+            value = ApplyPrecision(value);
+
             ValidateValue(value);
             _magenta = value;
 
             return this;
         }
 
-        public Cmyk SetYellow(float value)
+        public Cmyk SetYellow(double value)
         {
+            value = ApplyPrecision(value);
+
             ValidateValue(value);
             _yellow = value;
 
             return this;
         }
 
-        public Cmyk SetKey(float value)
+        public Cmyk SetKey(double value)
         {
+            value = ApplyPrecision(value);
+
             ValidateValue(value);
             _key = value;
 
             return this;
         }
 
-        protected void ValidateValue(float value)
+        protected void ValidateValue(double value)
         {
-            if (value > 1f || value < 0f)
+            if (value > 1d || value < 0d)
                 throw new ArgumentException("The component value must be between 0 and 1.", nameof(value));
+        }
+
+        protected double ApplyPrecision(double value)
+        {
+            return Math.Round(value, _precision);
         }
 
         public Color ToColor()
         {
-            int red = Convert.ToInt32(255f * (1f - _cyan) * (1f - _key));
-            int green = Convert.ToInt32(255f * (1f - _magenta) * (1f - _key));
-            int blue = Convert.ToInt32(255f * (1f - _yellow) * (1f - _key));
+            int red = Convert.ToInt32(255d * (1d - _cyan) * (1d - _key));
+            int green = Convert.ToInt32(255d * (1d - _magenta) * (1d - _key));
+            int blue = Convert.ToInt32(255d * (1d - _yellow) * (1d - _key));
 
             return Color.FromArgb(red, green, blue);
         }
@@ -108,17 +123,6 @@ namespace AlchemyEngine.Structures
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
-
-        public Cmyk GetRandom()
-        {
-            var rnd = new Random();
-
-            return new Cmyk()
-                .SetCyan((float)rnd.NextDouble())
-                .SetMagenta((float)rnd.NextDouble())
-                .SetYellow((float)rnd.NextDouble())
-                .SetKey((float)rnd.NextDouble());
         }
     }
 }

@@ -7,93 +7,63 @@ namespace AlchemyEngine.Test
     public class HslTests
     {
         [Fact]
-        public void StaticWhiteHslShouldBeWhiteRgb()
+        public void ConstWhiteHslShouldBeWhite()
         {
-            var whiteHsl = Hsl.White;
+            var expected = Color.FromArgb(255, 255, 255);
 
-            var whiteColor = Color.FromArgb(255, 255, 255);
+            var actual = Hsl.White.ToColor();
 
-            Assert.Equal(whiteColor, whiteHsl.ToColor());
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void StaticWhiteHslShouldBeWhiteCmyk()
+        public void ConstBlackHslShouldBeBlack()
         {
-            var whiteHsl = Hsl.White;
+            var expected = Color.FromArgb(0, 0, 0);
 
-            var whiteCmyk = Cmyk.White;
+            var actual = Hsl.Black.ToColor();
 
-            Assert.Equal(whiteCmyk, whiteHsl.ToCmyk());
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void StaticWhiteHslShouldBeWhiteYCbCr()
+        public void FlatRedHslShouldBeFlatRed()
         {
-            var whiteHsl = Hsl.White;
+            var expected = Color.FromArgb(255, 0, 0);
 
-            var whiteYCbCr = YCbCr.White;
+            var actual = new Hsl(0, 1d, .5d).ToColor();
 
-            Assert.Equal(whiteYCbCr, whiteHsl.ToYCbCr());
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void StaticBlackHslhouldBeBlackRgb()
+        public void FlatGreenHslShouldBeFlatGreen()
         {
-            var blackHsl = Hsl.Black;
+            var expected = Color.FromArgb(0, 255, 0);
 
-            var blackColor = Color.FromArgb(0, 0, 0);
+            var actual = new Hsl(120, 1d, .5d).ToColor();
 
-            Assert.Equal(blackColor, blackHsl.ToColor());
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void StaticBlackHslShouldBeBlackCmyk()
+        public void FlatBlueHslShouldBeFlatBlue()
         {
-            var blackHsl = Hsl.Black;
+            var expected = Color.FromArgb(0, 0, 255);
 
-            var blackCmyk = Cmyk.Black;
+            var actual = new Hsl(240, 1d, .5d).ToColor();
 
-            Assert.Equal(blackCmyk, blackHsl.ToCmyk());
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void StaticBlackHslShouldBeBlackYCbCr()
+        public void HslToHslShouldApplyNoChanges()
         {
-            var blackHsl = Hsl.Black;
+            var expected = new Hsl(40, .1d, .4d);
 
-            var blackYCbCr = YCbCr.Black;
+            var actual = expected.ToHsl();
 
-            Assert.Equal(blackYCbCr, blackHsl.ToYCbCr());
-        }
-
-        [Fact]
-        public void CustomRedHslShouldBeRedRgb()
-        {
-            var redHsl = new Hsl(0, 1.0f, 0.5f);
-
-            var redColor = Color.FromArgb(255, 0, 0);
-
-            Assert.Equal(redColor, redHsl.ToColor());
-        }
-
-        [Fact]
-        public void CustomRedHslShouldBeRedCmyk()
-        {
-            var redHsl = new Hsl(0, 1.0f, 0.5f);
-
-            var redCmyk = new Cmyk(0.0f, 1.0f, 1.0f, 0.0f);
-
-            Assert.Equal(redCmyk, redHsl.ToCmyk());
-        }
-
-        [Fact]
-        public void CustomRedHslShouldBeRedYCbCr()
-        {
-            var redHsl = new Hsl(0, 1.0f, 0.5f);
-
-            var redYCbCr = new YCbCr(76, 84, 255);
-
-            Assert.Equal(redYCbCr, redHsl.ToYCbCr());
+            Assert.Equal(expected, actual);
         }
     }
 }

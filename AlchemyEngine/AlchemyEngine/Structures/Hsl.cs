@@ -5,27 +5,29 @@ using System.Drawing;
 
 namespace AlchemyEngine.Structures
 {
-    public class Hsl : IConvertableColor, IRandomColor<Hsl>
+    public class Hsl : IConvertableColor
     {
+        protected int _precision = 2;
+
         protected int _hue;
-        protected float _saturation;
-        protected float _lightness;
+        protected double _saturation;
+        protected double _lightness;
 
         public Hsl()
         {
         }
 
-        public Hsl(int hue, float saturation, float lightness)
+        public Hsl(int hue, double saturation, double lightness)
         {
             SetHue(hue).SetSaturation(saturation).SetLightness(lightness);
         }
 
-        public static Hsl White => new Hsl(0, 0f, 1f);
-        public static Hsl Black => new Hsl(0, 0f, 0f);
+        public static Hsl White => new Hsl(0, 0d, 1d);
+        public static Hsl Black => new Hsl(0, 0d, 0d);
 
         public int Hue => _hue;
-        public float Saturation => _saturation;
-        public float Lightness => _lightness;
+        public double Saturation => _saturation;
+        public double Lightness => _lightness;
 
         public Hsl SetHue(int value)
         {
@@ -35,25 +37,29 @@ namespace AlchemyEngine.Structures
             return this;
         }
 
-        public Hsl SetSaturation(float value)
+        public Hsl SetSaturation(double value)
         {
-            ValidateFloatValue(value);
+            value = ApplyPrecision(value);
+
+            ValidateDoubleValue(value);
             _saturation = value;
 
             return this;
         }
 
-        public Hsl SetLightness(float value)
+        public Hsl SetLightness(double value)
         {
-            ValidateFloatValue(value);
+            value = ApplyPrecision(value);
+
+            ValidateDoubleValue(value);
             _lightness = value;
 
             return this;
         }
 
-        protected void ValidateFloatValue(float value)
+        protected void ValidateDoubleValue(double value)
         {
-            if (value > 1f || value < 0f)
+            if (value > 1d || value < 0d)
                 throw new ArgumentException("The component value must be between 0 and 1.", nameof(value));
         }
 
@@ -63,29 +69,55 @@ namespace AlchemyEngine.Structures
                 throw new ArgumentException("The hue value must be between 0 and 360.", nameof(value));
         }
 
+        protected double ApplyPrecision(double value)
+        {
+            return Math.Round(value, _precision);
+        }
+
+        protected double HueToRgbValues(double vA, double vB, double vCH)
+        {
+            double value = vA;
+
+            if (vCH < 0) vCH += 1.0d;
+            if (vCH > 1) vCH -= 1.0d;
+
+            if (vCH < 1.0 / 6) value = (vA + (vB - vA) * 6.0d * vCH);
+            else if (vCH < 1.0 / 2) value = vB;
+            else if (vCH < 2.0 / 3) value = (vA + (vB - vA) * ((2.0d / 3.0d) - vCH) * 6.0d);
+
+            return value;
+        }
+
         public Color ToColor()
         {
-            int red, green, blue;
+            double dr = 0.0d;
+            double dg = 0.0d;
+            double db = 0.0d;
 
             if (_saturation == 0)
             {
-                red = green = blue = (int)(_lightness * 255);
+                dr = dg = db = _lightness;
             }
             else
             {
-                float fHue = _hue * 360.0f;
+                double q = (_lightness < 0.5d)
+                ? _lightness * (1.0 + _saturation)
+                : _lightness + _saturation - _lightness * _saturation;
 
-                float vB = (_lightness < 0.5f) ?
-                    (_lightness * (1 + _saturation)) : ((_lightness + _saturation) - (_lightness * _saturation));
+                double p = 2 * _lightness - q;
 
-                float vA = 2 * _lightness - vB;
+                double dHue = _hue / 360.0d;
 
-                red = (int)(255 * HueToRgbValues(vA, vB, fHue + (1.0f / 3)));
-                green = (int)(255 * HueToRgbValues(vA, vB, fHue));
-                blue = (int)(255 * HueToRgbValues(vA, vB, fHue - (1.0f / 3)));
+                dr = (double)HueToRgbValues(p, q, dHue + 1.0d / 3.0d);
+                dg = (double)HueToRgbValues(p, q, dHue);
+                db = (double)HueToRgbValues(p, q, dHue - 1.0d / 3.0d);
             }
 
-            return Color.FromArgb(red, green, blue);
+            int r = (int)Math.Round(dr * 255);
+            int g = (int)Math.Round(dg * 255);
+            int b = (int)Math.Round(db * 255);
+
+            return Color.FromArgb(r, g, b);
         }
 
         public Cmyk ToCmyk()
@@ -119,28 +151,6 @@ namespace AlchemyEngine.Structures
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
-
-        protected float HueToRgbValues(float vA, float vB, float vCH)
-        {
-            if (vCH < 0) vCH += 1;
-            if (vCH > 1) vCH -= 1;
-
-            if ((6 * vCH) < 1) return (vA + (vB - vA) * 6 * vCH);
-            if ((2 * vCH) < 1) return vB;
-            if ((3 * vCH) < 2) return (vA + (vB - vA) * ((2.0f / 3) - vCH) * 6);
-
-            return vA;
-        }
-
-        public Hsl GetRandom()
-        {
-            var rnd = new Random();
-
-            return new Hsl()
-                .SetHue(rnd.Next(0, 365))
-                .SetSaturation((float)rnd.NextDouble())
-                .SetLightness((float)rnd.NextDouble());
         }
     }
 }

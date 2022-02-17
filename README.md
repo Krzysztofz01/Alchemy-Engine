@@ -69,19 +69,22 @@ Color comparison algorithms.
 
 **Blending**
 
-Mix colors based on the different methods given in the BlendingModes enum:
+- ```ColorBlender.Blend(Color a, Color b, BledingMode blendingMode)```
+- ```ColorBlender.Blend(IConvertableColor a, IConvertableColor b, BlendingMode blendingMode)```
 
-- ❌`Normal`
+Mix colors based on the different methods given in the ``BlendingMode`` enum:
 
-- ❌`Multiply`
-
-- ❌`Screen`
-
-- ❌`Overlay`
-
-- ❌`HardLight`
-
-- ❌`SoftLight`
+- ✅ ```BlendingMode.Normal```
+- ✅ ```BlendingMode.Darken```
+- ✅ ```BlendingMode.Multiply```
+- ✅ ```BlendingMode.Screen```
+- ✅ ```BlendingMode.Overlay```
+- ✅ ```BlendingMode.SoftLight```
+- ✅ ```BlendingMode.HardLight```
+- ✅ ```BlendingMode.Difference```
+- ✅ ```BlendingMode.Divide```
+- ✅ ```BlendingMode.Addition```
+- ✅ ```BlendingMode.Subtract```      
 
 **Glitch**
 

@@ -77,5 +77,20 @@ namespace AlchemyEngine.Extensions
 
             return new YCbCr(y, cb, cr);
         }
+
+        public static double RedInterval(this Color color)
+        {
+            return color.R / 255.0d;
+        }
+
+        public static double GreenInterval(this Color color)
+        {
+            return color.G / 255.0d;
+        }
+
+        public static double BlueInterval(this Color color)
+        {
+            return color.B / 255.0d;
+        }
     }
 }

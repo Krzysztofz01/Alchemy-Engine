@@ -38,8 +38,6 @@ The library introduces the most used color spaces and the `System.Drawing` exten
 
 The library extends the `System.Drawing.Bitmap` class with new functionalities.
 
-  
-
 - ✅ `Scale(int percent)` - Scale the image by given percent.
 
 - ❌ `Invert()` - Invert the colors (negative effect).
@@ -48,31 +46,30 @@ The library extends the `System.Drawing.Bitmap` class with new functionalities.
 
 -  ✅ `GetPallete(PalleteGenerator)` / `GetPalleteAsync(PalleteGenerator)` - Creates a color palette based on a bitmap, you can choose from different PalleteGenerator graphics sampling methods.
 
-  
-  ### PalleteGenerators
-  - ✅ `PalleteGenerator.CubeMethod`
-  - ✅ `PalleteGenerator.AdditionMethod`
-  - ❌ `PalleteGenerator.VerticalStripMethod`
-  - ❌ `PalleteGenerator.HorizontalStripMethod`
+```PalleteGenerator``` enum:
+- ✅ `PalleteGenerator.CubeMethod`
+- ✅ `PalleteGenerator.AdditionMethod`
+- ❌ `PalleteGenerator.VerticalStripeMethod`
+- ❌ `PalleteGenerator.HorizontalStripeMethod`
 
 ##  Processing
 
 **ColorComparer**
 
-Color comparison algorithms.
+Color comparison algorithms. Get the double value difference between colors.
 
-- ✅`Distance(T A, T B)` - Get the float value difference between colors.
+- ```ColorComparer.Distance(Color a, Color b)```
+- ```ColorComparer.Distance(Color a, IConvertableColor b)```
+- ```ColorComparer.Distance(IConvertableColor a, IConvertableColor b)```
 
 **Compression**
 
-  
-
 **Blending**
+
+Mix colors based on the different methods given in the ``BlendingMode`` enum:
 
 - ```ColorBlender.Blend(Color a, Color b, BledingMode blendingMode)```
 - ```ColorBlender.Blend(IConvertableColor a, IConvertableColor b, BlendingMode blendingMode)```
-
-Mix colors based on the different methods given in the ``BlendingMode`` enum:
 
 - ✅ ```BlendingMode.Normal```
 - ✅ ```BlendingMode.Darken```
@@ -89,8 +86,6 @@ Mix colors based on the different methods given in the ``BlendingMode`` enum:
 **Glitch**
 
 Add character to the image with various distortions and glitches.
-
-  
 
 - ❌`PixelShift`
 

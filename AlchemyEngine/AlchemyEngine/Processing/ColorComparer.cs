@@ -11,6 +11,11 @@ namespace AlchemyEngine.Processing
             return Distance(a.ToColor(), b.ToColor());
         }
 
+        public static double Distance(Color a, IConvertableColor b)
+        {
+            return Distance(a, b.ToColor());
+        }
+
         public static double Distance(Color a, Color b)
         {
             int redDistance = Math.Abs(a.R - b.R);

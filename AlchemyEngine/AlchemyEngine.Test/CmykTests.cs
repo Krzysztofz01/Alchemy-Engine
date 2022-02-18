@@ -7,6 +7,102 @@ namespace AlchemyEngine.Test
     public class CmykTests
     {
         [Fact]
+        public void ShouldUpdateCyanUsingDefault()
+        {
+            var cmyk = new Cmyk(.2, .2, .2, .2);
+
+            cmyk.SetCyan(.4);
+
+            var expected = .4;
+
+            Assert.Equal(expected, cmyk.Cyan);
+        }
+
+        [Fact]
+        public void ShouldUpdateCyanUsingExpression()
+        {
+            var cmyk = new Cmyk(.2, .2, .2, .2);
+
+            cmyk.SetCyan(c => c + .2d);
+
+            var expected = .4;
+
+            Assert.Equal(expected, cmyk.Cyan);
+        }
+
+        [Fact]
+        public void ShouldUpdateMagentaUsingDefault()
+        {
+            var cmyk = new Cmyk(.2, .2, .2, .2);
+
+            cmyk.SetMagenta(.4);
+
+            var expected = .4;
+
+            Assert.Equal(expected, cmyk.Magenta);
+        }
+
+        [Fact]
+        public void ShouldUpdateMagentaUsingExpression()
+        {
+            var cmyk = new Cmyk(.2, .2, .2, .2);
+
+            cmyk.SetMagenta(c => c + .2d);
+
+            var expected = .4;
+
+            Assert.Equal(expected, cmyk.Magenta);
+        }
+
+        [Fact]
+        public void ShouldUpdateYellowUsingDefault()
+        {
+            var cmyk = new Cmyk(.2, .2, .2, .2);
+
+            cmyk.SetYellow(.4);
+
+            var expected = .4;
+
+            Assert.Equal(expected, cmyk.Yellow);
+        }
+
+        [Fact]
+        public void ShouldUpdateYellowUsingExpression()
+        {
+            var cmyk = new Cmyk(.2, .2, .2, .2);
+
+            cmyk.SetYellow(c => c + .2d);
+
+            var expected = .4;
+
+            Assert.Equal(expected, cmyk.Yellow);
+        }
+
+        [Fact]
+        public void ShouldUpdateKeyUsingDefault()
+        {
+            var cmyk = new Cmyk(.2, .2, .2, .2);
+
+            cmyk.SetKey(.4);
+
+            var expected = .4;
+
+            Assert.Equal(expected, cmyk.Key);
+        }
+
+        [Fact]
+        public void ShouldUpdateKeyUsingExpression()
+        {
+            var cmyk = new Cmyk(.2, .2, .2, .2);
+
+            cmyk.SetKey(c => c + .2d);
+
+            var expected = .4;
+
+            Assert.Equal(expected, cmyk.Key);
+        }
+
+        [Fact]
         public void ConstWhiteCmykShouldBeWhite()
         {
             var expected = Color.FromArgb(255, 255, 255);

@@ -5,46 +5,41 @@ The Alchemy-Engine library is an extension of projects such as ColorShaper, Colo
 
 ##  Structures
 
-The library introduces the most used color spaces and the `System.Drawing` extension, converting between color spaces is very easy thanks to the Fluent API. The structures implement the `IConvertableColor` interfaces  which allow for conversion between other colors and `IRandomColor` which adds the random color method.
+The library introduces the most used color spaces and the `System.Drawing` extension, converting between color spaces is very easy thanks to the Fluent API. The structures implement the `IConvertableColor` interface which allow for conversion between other colors.
 
-  
+```
+//Creating a random color
+var myColor = Color.GetRandom();
 
-    //Creating a random color
-	var myColor = Color.GetRandom();
-    
-    //Converting to hsl, updating the saturation and converting to cmyk
-    var updatedCmykColor = myColor
-	    .ToHsl()
-	    .SetSaturation(0.8f);
-	    .ToCmyk();
+// Make changes using features of all color spaces    
+// Example:
+// Convert to hsl to update saturation, convert to cmyk to add cyan tint, convert back to rgb color
+var updatedCmykColor = myColor
+	.ToHsl()
+	.SetSaturation(0.8d)
+	.ToCmyk()
+	.SetCyan(c => c + 0.2d)
+	.ToColor();
+```
  
 **Available color spaces**
-
-  
-
 - ✅ RGB (Extension)
-
 - ✅ CMYK
-
 - ✅ HSL
-
 - ❌ HSV
-- ⚠️YCbCr
-
-  
-  
+- ⚠️YUV (YCbCr)
 
 ##  Extensions
 
 The library extends the `System.Drawing.Bitmap` class with new functionalities.
 
 - ✅ `Scale(int percent)` - Scale the image by given percent.
-
-- ❌ `Invert()` - Invert the colors (negative effect).
-
-- ❌ `Grayscale()` - Make the image black and white.
-
--  ✅ `GetPallete(PalleteGenerator)` / `GetPalleteAsync(PalleteGenerator)` - Creates a color palette based on a bitmap, you can choose from different PalleteGenerator graphics sampling methods.
+- ✅ `Invert()` - Invert the colors (negative effect).
+- ✅ `Grayscale()` - Make the image black and white.
+- ❌ `Brightness(int value)` - Change the brightness (Values between -100 and 100).
+- ❌ `Contrast(int value)` - Change the contrast (Values between -100 and 100).
+- ❌ `ChannelFilter(Channel)` - Extract the channel selected by the `Channel` enum.
+- ✅ `GetPallete(PalleteGenerator)` / `GetPalleteAsync(PalleteGenerator)` - Creates a color palette based on a bitmap, you can choose from different `PalleteGenerator` graphics sampling methods.
 
 ```PalleteGenerator``` enum:
 - ✅ `PalleteGenerator.CubeMethod`
@@ -52,15 +47,20 @@ The library extends the `System.Drawing.Bitmap` class with new functionalities.
 - ❌ `PalleteGenerator.VerticalStripeMethod`
 - ❌ `PalleteGenerator.HorizontalStripeMethod`
 
+```Channel``` enum:
+- ❌ `Channel.Red`
+- ❌ `Channel.Green`
+- ❌ `Channel.Blue`
+
 ##  Processing
 
 **ColorComparer**
 
 Color comparison algorithms. Get the double value difference between colors.
 
-- ```ColorComparer.Distance(Color a, Color b)```
-- ```ColorComparer.Distance(Color a, IConvertableColor b)```
-- ```ColorComparer.Distance(IConvertableColor a, IConvertableColor b)```
+- ✅ ```ColorComparer.Distance(Color a, Color b)```
+- ✅ ```ColorComparer.Distance(Color a, IConvertableColor b)```
+- ✅ ```ColorComparer.Distance(IConvertableColor a, IConvertableColor b)```
 
 **Compression**
 
@@ -68,9 +68,10 @@ Color comparison algorithms. Get the double value difference between colors.
 
 Mix colors based on the different methods given in the ``BlendingMode`` enum:
 
-- ```ColorBlender.Blend(Color a, Color b, BledingMode blendingMode)```
-- ```ColorBlender.Blend(IConvertableColor a, IConvertableColor b, BlendingMode blendingMode)```
+- ✅ ```ColorBlender.Blend(Color a, Color b, BledingMode blendingMode)```
+- ✅ ```ColorBlender.Blend(IConvertableColor a, IConvertableColor b, BlendingMode blendingMode)```
 
+```BlendingMode``` enum:
 - ✅ ```BlendingMode.Normal```
 - ✅ ```BlendingMode.Darken```
 - ✅ ```BlendingMode.Multiply```
@@ -86,11 +87,7 @@ Mix colors based on the different methods given in the ``BlendingMode`` enum:
 **Glitch**
 
 Add character to the image with various distortions and glitches.
-
 - ❌`PixelShift`
-
 - ❌`ChromaticShift`
-
 - ❌`Noise`
-
 - ❌`VhsOverlay`

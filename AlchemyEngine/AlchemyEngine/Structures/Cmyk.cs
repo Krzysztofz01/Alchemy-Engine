@@ -31,6 +31,7 @@ namespace AlchemyEngine.Structures
         public double Yellow => _yellow;
         public double Key => _key;
 
+        public Cmyk SetCyan(Func<double, double> expression) => SetCyan(expression(_cyan));
         public Cmyk SetCyan(double value)
         {
             value = ApplyPrecision(value);
@@ -41,6 +42,7 @@ namespace AlchemyEngine.Structures
             return this;
         }
 
+        public Cmyk SetMagenta(Func<double, double> expresion) => SetMagenta(expresion(_magenta));
         public Cmyk SetMagenta(double value)
         {
             value = ApplyPrecision(value);
@@ -51,6 +53,7 @@ namespace AlchemyEngine.Structures
             return this;
         }
 
+        public Cmyk SetYellow(Func<double, double> expression) => SetYellow(expression(_yellow));
         public Cmyk SetYellow(double value)
         {
             value = ApplyPrecision(value);
@@ -61,6 +64,7 @@ namespace AlchemyEngine.Structures
             return this;
         }
 
+        public Cmyk SetKey(Func<double, double> expresion) => SetKey(expresion(_key));
         public Cmyk SetKey(double value)
         {
             value = ApplyPrecision(value);

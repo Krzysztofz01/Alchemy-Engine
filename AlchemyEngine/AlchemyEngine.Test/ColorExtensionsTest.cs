@@ -8,93 +8,103 @@ namespace AlchemyEngine.Test
     public class ColorExtensionsTest
     {
         [Fact]
-        public void CustomWhiteRgbShouldBeWhiteCmyk()
+        public void ShouldReturnUpdatedRedUsingExpression()
         {
-            var whiteCmyk = Cmyk.White;
+            var color = Color.FromArgb(128, 128, 128, 128);
 
-            var whiteColor = Color.FromArgb(255, 255, 255);
+            var updatedColor = color.SetRed(v => v + 12);
 
-            Assert.Equal(whiteCmyk, whiteColor.ToCmyk());
+            var expected = 140;
+
+            Assert.Equal(expected, updatedColor.R);
         }
 
         [Fact]
-        public void CustomWhiteRgbShouldBeWhiteHsl()
+        public void ShouldReturnUpdatedGreenUsingExpression()
         {
-            var whiteHsl = Hsl.White;
+            var color = Color.FromArgb(128, 128, 128, 128);
 
-            var whiteColor = Color.FromArgb(255, 255, 255);
+            var updatedColor = color.SetGreen(v => v + 12);
 
-            Assert.Equal(whiteHsl, whiteColor.ToHsl());
+            var expected = 140;
+
+            Assert.Equal(expected, updatedColor.G);
         }
 
         [Fact]
-        public void CustomWhiteRgbShouldBeWhiteYCbCr()
+        public void ShouldReturnUpdatedBlueUsingExpression()
         {
-            var whiteYCbCr = YCbCr.White;
+            var color = Color.FromArgb(128, 128, 128, 128);
 
-            var whiteColor = Color.FromArgb(255, 255, 255);
+            var updatedColor = color.SetBlue(v => v + 12);
 
-            Assert.Equal(whiteYCbCr, whiteColor.ToYCbCr());
+            var expected = 140;
+
+            Assert.Equal(expected, updatedColor.B);
         }
 
         [Fact]
-        public void CustomBlackRgbShouldBeBlackCmyk()
+        public void ShouldReturnUpdatedAlphaUsingExpression()
         {
-            var blackCmyk = Cmyk.Black;
+            var color = Color.FromArgb(128, 128, 128, 128);
 
-            var blackColor = Color.FromArgb(0, 0, 0);
+            var updatedColor = color.SetAlpha(v => v + 12);
 
-            Assert.Equal(blackCmyk, blackColor.ToCmyk());
+            var expected = 140;
+
+            Assert.Equal(expected, updatedColor.A);
         }
 
         [Fact]
-        public void CustomBlackRgbShouldBeBlackHsl()
+        public void ShouldConvertToHexPresentation()
         {
-            var blackHsl = Hsl.Black;
+            var color = Color.FromArgb(128, 128, 128);
 
-            var blackColor = Color.FromArgb(0, 0, 0);
+            var hex = color.ToHex();
 
-            Assert.Equal(blackHsl, blackColor.ToHsl());
+            var expected = "#808080";
+
+            Assert.Equal(expected, hex);
         }
 
         [Fact]
-        public void CustomBlackRgbShouldBeBlackYCbCr()
+        public void ShouldConvertToHslBlack()
         {
-            var blackYCbCr = YCbCr.Black;
+            var color = Color.FromArgb(0, 0, 0);
 
-            var blackColor = Color.FromArgb(0, 0, 0);
+            var hsl = color.ToHsl();
 
-            Assert.Equal(blackYCbCr, blackColor.ToYCbCr());
+            Assert.Equal(color, hsl.ToColor());
         }
 
         [Fact]
-        public void CustomRedRgbShouldBeRedCmyk()
+        public void ShouldConvertToHslWhite()
         {
-            var redCmyk = new Cmyk(0, 1, 1, 0);
+            var color = Color.FromArgb(255, 255, 255);
 
-            var redColor = Color.FromArgb(255, 0, 0);
+            var hsl = color.ToHsl();
 
-            Assert.Equal(redCmyk, redColor.ToCmyk());
+            Assert.Equal(color, hsl.ToColor());
         }
 
         [Fact]
-        public void CustomRedRgbShouldBeRedHsl()
+        public void ShouldConvertToCmykBlack()
         {
-            var redHsl = new Hsl(0, 1.0f, 0.5f);
+            var color = Color.FromArgb(0, 0, 0);
 
-            var redColor = Color.FromArgb(255, 0, 0);
+            var cmyk = color.ToCmyk();
 
-            Assert.Equal(redHsl, redColor.ToHsl());
+            Assert.Equal(color, cmyk.ToColor());
         }
 
         [Fact]
-        public void CustomRedRgbShouldBeRedYCbCr()
+        public void ShouldConvertToCmykWhite()
         {
-            var redYCbCr = new YCbCr(76, 84, 255);
+            var color = Color.FromArgb(255, 255, 255);
 
-            var redColor = Color.FromArgb(255, 0, 0);
+            var cmyk = color.ToCmyk();
 
-            Assert.Equal(redYCbCr, redColor.ToYCbCr());
+            Assert.Equal(color, cmyk.ToColor());
         }
     }
 }

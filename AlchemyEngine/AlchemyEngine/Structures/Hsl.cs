@@ -29,6 +29,7 @@ namespace AlchemyEngine.Structures
         public double Saturation => _saturation;
         public double Lightness => _lightness;
 
+        public Hsl SetHue(Func<int, int> expression) => SetHue(expression(_hue));
         public Hsl SetHue(int value)
         {
             ValidateHueValue(value);
@@ -37,6 +38,7 @@ namespace AlchemyEngine.Structures
             return this;
         }
 
+        public Hsl SetSaturation(Func<double, double> expression) => SetSaturation(expression(_saturation));
         public Hsl SetSaturation(double value)
         {
             value = ApplyPrecision(value);
@@ -47,6 +49,7 @@ namespace AlchemyEngine.Structures
             return this;
         }
 
+        public Hsl SetLightness(Func<double, double> expression) => SetLightness(expression(_lightness));
         public Hsl SetLightness(double value)
         {
             value = ApplyPrecision(value);

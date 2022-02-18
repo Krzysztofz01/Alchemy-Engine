@@ -78,6 +78,26 @@ namespace AlchemyEngine.Extensions
             return new YCbCr(y, cb, cr);
         }
 
+        public static Color SetRed(this Color color, Func<int, int> expression)
+        {
+            return Color.FromArgb(color.A, expression(color.R), color.G, color.B);
+        }
+
+        public static Color SetGreen(this Color color, Func<int, int> expression)
+        {
+            return Color.FromArgb(color.A, color.R, expression(color.G), color.B);
+        }
+
+        public static Color SetBlue(this Color color, Func<int, int> expression)
+        {
+            return Color.FromArgb(color.A, color.R, color.G, expression(color.B));
+        }
+
+        public static Color SetAlpha(this Color color, Func<int, int> expression)
+        {
+            return Color.FromArgb(expression(color.A), color.R, color.G, color.B);
+        }
+
         public static double RedInterval(this Color color)
         {
             return color.R / 255.0d;

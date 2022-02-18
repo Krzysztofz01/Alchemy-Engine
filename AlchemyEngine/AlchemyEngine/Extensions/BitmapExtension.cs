@@ -22,34 +22,90 @@ namespace AlchemyEngine.Extensions
             return new Bitmap(bitmap, new Size(width, height));
         }
 
+        public static Bitmap Invert(this Bitmap bitmap)
+        {
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+            int bytesPerPixel = Bitmap.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+            int byteCount = bitmapData.Stride * bitmap.Height;
+            byte[] pixels = new byte[byteCount];
+            IntPtr ptrFirstPixel = bitmapData.Scan0;
+            Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
+            int heightInPixels = bitmapData.Height;
+            int widthInBytes = bitmapData.Width * bytesPerPixel;
+
+            for (int y = 0; y < heightInPixels; y++)
+            {
+                int currentLine = y * bitmapData.Stride;
+                for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+                {
+                    int blue = 255 - pixels[currentLine + x];
+                    int green = 255 - pixels[currentLine + x + 1];
+                    int red = 255 - pixels[currentLine + x + 2];
+
+                    pixels[currentLine + x] = (byte)blue;
+                    pixels[currentLine + x + 1] = (byte)green;
+                    pixels[currentLine + x + 2] = (byte)red;
+                }
+            }
+
+            Marshal.Copy(pixels, 0, ptrFirstPixel, pixels.Length);
+            bitmap.UnlockBits(bitmapData);
+            return bitmap;
+        }
+
+        public static Bitmap Grayscale(this Bitmap bitmap)
+        {
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+            int bytesPerPixel = Bitmap.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+            int byteCount = bitmapData.Stride * bitmap.Height;
+            byte[] pixels = new byte[byteCount];
+            IntPtr ptrFirstPixel = bitmapData.Scan0;
+            Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
+            int heightInPixels = bitmapData.Height;
+            int widthInBytes = bitmapData.Width * bytesPerPixel;
+
+            for (int y = 0; y < heightInPixels; y++)
+            {
+                int currentLine = y * bitmapData.Stride;
+                for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+                {
+                    int blue = pixels[currentLine + x];
+                    int green = pixels[currentLine + x + 1];
+                    int red = pixels[currentLine + x + 2];
+
+                    byte value = (byte)(0.299d * red + 0.587d * green + 0.114d * blue);
+
+                    pixels[currentLine + x] = value;
+                    pixels[currentLine + x + 1] = value;
+                    pixels[currentLine + x + 2] = value;
+                }
+            }
+
+            Marshal.Copy(pixels, 0, ptrFirstPixel, pixels.Length);
+            bitmap.UnlockBits(bitmapData);
+            return bitmap;
+        }
+
         public static IEnumerable<Color> GetPallete(this Bitmap bitmap, PalleteGenerator palleteGenerator)
         {
-            switch (palleteGenerator)
+            return palleteGenerator switch
             {
-                case PalleteGenerator.AdditionMethod: return GeneratePalleteAdditionMethod(bitmap);
-                case PalleteGenerator.CubeMethod: return GeneratePalleteCubeMethod(bitmap);
-                default: throw new ArgumentOutOfRangeException("Invalid PalleteGenerator argument.");
-            }
+                PalleteGenerator.AdditionMethod => GeneratePalleteAdditionMethod(bitmap),
+                PalleteGenerator.CubeMethod => GeneratePalleteCubeMethod(bitmap),
+                _ => throw new ArgumentOutOfRangeException(nameof(palleteGenerator), "Invalid PalleteGenerator argument."),
+            };
         }
 
-        public static async Task<IEnumerable<Color>> GetPalleteAsync(this Bitmap bitmap, PalleteGenerator palleteGenerator)
+        public static async Task<IEnumerable<Color>> GetPalleteAsync(this Bitmap bitmap, PalleteGenerator palleteGenerator, CancellationToken cancellationToken = default)
         {
-            switch (palleteGenerator)
+            return palleteGenerator switch
             {
-                case PalleteGenerator.AdditionMethod: return await Task.Run(() => GeneratePalleteAdditionMethod(bitmap));
-                case PalleteGenerator.CubeMethod: return await Task.Run(() => GeneratePalleteCubeMethod(bitmap));
-                default: throw new ArgumentOutOfRangeException("Invalid PalleteGenerator argument.");
-            }
-        }
-
-        public static async Task<IEnumerable<Color>> GetPalleteAsync(this Bitmap bitmap, PalleteGenerator palleteGenerator, CancellationToken cancellationToken)
-        {
-            switch (palleteGenerator)
-            {
-                case PalleteGenerator.AdditionMethod: return await Task.Run(() => GeneratePalleteAdditionMethod(bitmap), cancellationToken);
-                case PalleteGenerator.CubeMethod: return await Task.Run(() => GeneratePalleteCubeMethod(bitmap), cancellationToken);
-                default: throw new ArgumentOutOfRangeException("Invalid PalleteGenerator argument.");
-            }
+                PalleteGenerator.AdditionMethod => await Task.Run(() => GeneratePalleteAdditionMethod(bitmap), cancellationToken),
+                PalleteGenerator.CubeMethod => await Task.Run(() => GeneratePalleteCubeMethod(bitmap), cancellationToken),
+                _ => throw new ArgumentOutOfRangeException(nameof(palleteGenerator), "Invalid PalleteGenerator argument."),
+            };
         }
 
         private static IEnumerable<Color> GeneratePalleteAdditionMethod(Bitmap bitmap)

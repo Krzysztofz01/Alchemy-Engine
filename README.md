@@ -27,7 +27,8 @@ var updatedCmykColor = myColor
 - ✅ CMYK
 - ✅ HSL
 - ❌ HSV
-- ⚠️YUV (YCbCr)
+- ✅ YUV
+- ⚠️ YCbCr
 
 ##  Extensions
 
@@ -91,3 +92,7 @@ Add character to the image with various distortions and glitches.
 - ❌`ChromaticShift`
 - ❌`Noise`
 - ❌`VhsOverlay`
+
+
+## Support
+The target fremework of Alchemy-Engine is .NET Standard 2.1, which offers many compatible versions except .NET Framework (Windows). Full specification of compatible versions can be found in the [documentation](https://docs.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard-2-0).

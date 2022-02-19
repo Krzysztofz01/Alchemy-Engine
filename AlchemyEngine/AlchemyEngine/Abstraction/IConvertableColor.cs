@@ -9,5 +9,6 @@ namespace AlchemyEngine.Abstraction
         Cmyk ToCmyk();
         Hsl ToHsl();
         YCbCr ToYCbCr();
+        Yuv ToYuv();
     }
 }

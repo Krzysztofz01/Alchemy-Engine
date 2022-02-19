@@ -1,5 +1,4 @@
-﻿using AlchemyEngine.Structures;
-using AlchemyEngine.Extensions;
+﻿using AlchemyEngine.Extensions;
 using System.Drawing;
 using Xunit;
 
@@ -105,6 +104,26 @@ namespace AlchemyEngine.Test
             var cmyk = color.ToCmyk();
 
             Assert.Equal(color, cmyk.ToColor());
+        }
+
+        [Fact]
+        public void ShouldConvertToYuvBlack()
+        {
+            var color = Color.FromArgb(0, 0, 0);
+
+            var yuv = color.ToYuv();
+
+            Assert.Equal(color, yuv.ToColor());
+        }
+
+        [Fact]
+        public void ShouldConvertToYuvWhite()
+        {
+            var color = Color.FromArgb(255, 255, 255);
+
+            var yuv = color.ToYuv();
+
+            Assert.Equal(color, yuv.ToColor());
         }
     }
 }

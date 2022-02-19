@@ -78,6 +78,19 @@ namespace AlchemyEngine.Extensions
             return new YCbCr(y, cb, cr);
         }
 
+        public static Yuv ToYuv(this Color color)
+        {
+            double red = color.RedInterval();
+            double green = color.GreenInterval();
+            double blue = color.BlueInterval();
+
+            double luma = 0.299d * red + 0.587d * green + 0.114d * blue;
+            double chU = -0.14713d * red + -0.28886d * green + 0.436d * blue;
+            double chV = 0.615d * red + -0.51499 * green + -0.10001d * blue;
+
+            return new Yuv(luma, chU, chV);
+        }
+
         public static Color SetRed(this Color color, Func<int, int> expression)
         {
             return Color.FromArgb(color.A, expression(color.R), color.G, color.B);

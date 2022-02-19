@@ -7,7 +7,7 @@ namespace AlchemyEngine.Structures
 {
     public class Hsl : IConvertableColor
     {
-        protected int _precision = 2;
+        protected readonly int _precision = 2;
 
         protected int _hue;
         protected double _saturation;
@@ -136,6 +136,11 @@ namespace AlchemyEngine.Structures
         public YCbCr ToYCbCr()
         {
             return ToColor().ToYCbCr();
+        }
+
+        public Yuv ToYuv()
+        {
+            return ToColor().ToYuv();
         }
 
         public override string ToString()

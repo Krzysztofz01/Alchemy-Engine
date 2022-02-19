@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace AlchemyEngine.Structures
 {
-    public class YCbCr : IConvertableColor, IRandomColor<YCbCr>
+    public class YCbCr : IConvertableColor
     {
         protected int _y;
         protected int _cb;
@@ -79,6 +79,11 @@ namespace AlchemyEngine.Structures
         public YCbCr ToYCbCr()
         {
             return this;
+        }
+
+        public Yuv ToYuv()
+        {
+            return ToColor().ToYuv();
         }
 
         public override string ToString()

@@ -7,7 +7,7 @@ namespace AlchemyEngine.Structures
 {
     public class Cmyk : IConvertableColor
     {
-        protected int _precision = 2;
+        protected readonly int _precision = 2;
 
         protected double _cyan;
         protected double _magenta;
@@ -108,6 +108,11 @@ namespace AlchemyEngine.Structures
         public YCbCr ToYCbCr()
         {
             return ToColor().ToYCbCr();
+        }
+
+        public Yuv ToYuv()
+        {
+            return ToColor().ToYuv();
         }
 
         public override string ToString()

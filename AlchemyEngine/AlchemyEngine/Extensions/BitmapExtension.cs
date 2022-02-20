@@ -110,9 +110,7 @@ namespace AlchemyEngine.Extensions
 
         private static IEnumerable<Color> GeneratePalleteAdditionMethod(Bitmap bitmap)
         {
-            //Data preparation step
             var scaledBitmap = bitmap.Scale(50);
-            var colors = new Dictionary<Color, int>();
 
             BitmapData bitmapData = scaledBitmap
                 .LockBits(new Rectangle(0, 0, scaledBitmap.Width, scaledBitmap.Height), ImageLockMode.ReadOnly, scaledBitmap.PixelFormat);
@@ -121,44 +119,38 @@ namespace AlchemyEngine.Extensions
             int byteCount = bitmapData.Stride * scaledBitmap.Height;
             byte[] pixels = new byte[byteCount];
             IntPtr firstPixelPtr = bitmapData.Scan0;
-
             Marshal.Copy(firstPixelPtr, pixels, 0, pixels.Length);
             int heightInPixels = bitmapData.Height;
-            int widthInPixels = bitmapData.Width;
+            int widthInBytes = bitmapData.Width;
 
-            //Scaning step
-            for(int y=0; y < heightInPixels; y++)
+            var colors = new Dictionary<Color, int>();
+            for (int y = 0; y < heightInPixels; y++)
             {
-                int currentLine = y * bitmapData.Stride;
-                
-                for(int x=0; x < widthInPixels; x++)
+                int currentLine = y * bitmapData.Stride;         
+                for (int x = 0; x < widthInBytes; x++)
                 {
-                    //Pixel color access
-                    var currentPixel = Color.FromArgb(pixels[currentLine + x + 2], pixels[currentLine + x + 1], pixels[currentLine + x]);
+                    var currentPixel = Color.FromArgb(
+                        pixels[currentLine + x + 2],
+                        pixels[currentLine + x + 1],
+                        pixels[currentLine + x]);
 
-                    if (colors.ContainsKey(currentPixel))
-                    {
-                        colors[currentPixel]++;
-                    }
-                    else
-                    {
-                        colors.Add(currentPixel, 1);
-                    }
+                    if (!colors.ContainsKey(currentPixel))
+                        colors.Add(currentPixel, 0);
+
+                    colors[currentPixel]++;
                 }
             }
 
             scaledBitmap.UnlockBits(bitmapData);
 
-            //Sorting step
             colors.OrderByDescending(x => x.Value);
 
-            //Filtering step
             var filteredPallete = new List<Color>();
+            if (colors.Count == 0) return filteredPallete;
 
-            foreach(var color in colors)
+            filteredPallete.Add(colors.First().Key);
+            foreach (var color in colors.Skip(1))
             {
-                if (!filteredPallete.Any()) filteredPallete.Add(color.Key);
-
                 if (ColorComparer.Distance(color.Key, filteredPallete.Last()) > 45) filteredPallete.Add(color.Key);
 
                 if (filteredPallete.Count == 10) break;
@@ -169,28 +161,7 @@ namespace AlchemyEngine.Extensions
 
         private static IEnumerable<Color> GeneratePalleteCubeMethod(Bitmap bitmap)
         {
-            //Local index definition function
-            static int getIndex(int value)
-            {
-                if (value < 85) return 0;
-                if (value > 170) return 2;
-                return 1;
-            }
-
-            //Data preparation step
             var scaledBitmap = bitmap.Scale(50);
-            var colorMatrix = new List<Color>[3, 3, 3];
-
-            for (int xAxis = 0; xAxis < 3; xAxis++)
-            {
-                for (int yAxis = 0; yAxis < 3; yAxis++)
-                {
-                    for (int zAxis = 0; zAxis < 3; zAxis++)
-                    {
-                        colorMatrix[xAxis, yAxis, zAxis] = new List<Color>();
-                    }
-                }
-            }
 
             BitmapData bitmapData = scaledBitmap
                 .LockBits(new Rectangle(0, 0, scaledBitmap.Width, scaledBitmap.Height), ImageLockMode.ReadOnly, scaledBitmap.PixelFormat);
@@ -199,24 +170,29 @@ namespace AlchemyEngine.Extensions
             int byteCount = bitmapData.Stride * scaledBitmap.Height;
             byte[] pixels = new byte[byteCount];
             IntPtr firstPixelPtr = bitmapData.Scan0;
-
             Marshal.Copy(firstPixelPtr, pixels, 0, pixels.Length);
             int heightInPixels = bitmapData.Height;
-            int widthInPixels = bitmapData.Width;
+            int widthInBytes = bitmapData.Width;
 
-            //Scaning step
+            var colorMatrix = new List<Color>[3, 3, 3];
+            for (int x = 0; x < 3; x++)
+                for (int y = 0; y < 3; y++)
+                    for (int z = 0; z < 3; z++)
+                        colorMatrix[x, y, z] = new List<Color>();
+
             for (int y = 0; y < heightInPixels; y++)
             {
                 int currentLine = y * bitmapData.Stride;
-
-                for (int x = 0; x < widthInPixels; x++)
+                for (int x = 0; x < widthInBytes; x += bytesPerPixel)
                 {
-                    //Pixel color access
-                    var currentPixel = Color.FromArgb(pixels[currentLine + x + 2], pixels[currentLine + x + 1], pixels[currentLine + x]);
+                    var currentPixel = Color.FromArgb(
+                        pixels[currentLine + x + 2],
+                        pixels[currentLine + x + 1],
+                        pixels[currentLine + x]);
 
-                    int redIndex = getIndex(currentPixel.R);
-                    int greenIndex = getIndex(currentPixel.G);
-                    int blueIndex = getIndex(currentPixel.B);
+                    int redIndex = (currentPixel.R > 170) ? 2 : (currentPixel.R < 85) ? 0 : 1;
+                    int greenIndex = (currentPixel.G > 170) ? 2 : (currentPixel.G < 85) ? 0 : 1;
+                    int blueIndex = (currentPixel.B > 170) ? 2 : (currentPixel.B < 85) ? 0 : 1;
 
                     colorMatrix[redIndex, greenIndex, blueIndex].Add(currentPixel);
                 }
@@ -224,22 +200,20 @@ namespace AlchemyEngine.Extensions
 
             scaledBitmap.UnlockBits(bitmapData);
 
-            //Merge step
             var colors = new List<Color>();
-
             for (int r = 0; r < 3; r++)
             {
                 for (int g = 0; g < 3; g++)
                 {
                     for (int b = 0; b < 3; b++)
                     {
+                        int colorCount = colorMatrix[r, g, b].Count;
+                        if (colorCount == 0) continue;
+
                         int rSum = 0;
                         int gSum = 0;
                         int bSum = 0;
-                        int colorCount = colorMatrix[r, g, b].Count;
-
-                        if (colorCount == 0) continue;
-
+                        
                         foreach(var color in colorMatrix[r, g, b])
                         {
                             rSum += color.R;

@@ -13,51 +13,51 @@ namespace AlchemyEngine.Extensions
 
         public static Cmyk ToCmyk(this Color color)
         {
-            float red = color.R / 255.0f;
-            float green = color.G / 255.0f;
-            float blue = color.B / 255.0f;
+            double red = color.RedInterval();
+            double green = color.GreenInterval();
+            double blue = color.BlueInterval();
 
-            float k = Math.Min(1.0f - red, Math.Min(1.0f - green, 1.0f - blue));
-            float kDiff = 1.0f - k;
+            double k = Math.Min(1.0d - red, Math.Min(1.0d - green, 1.0d - blue));
+            double kDiff = 1.0d - k;
 
-            float c = (kDiff > 0) ? (1.0f - red - k) / kDiff : 0;
-            float m = (kDiff > 0) ? (1.0f - green - k) / kDiff : 0;
-            float y = (kDiff > 0) ? (1.0f - blue - k) / kDiff : 0;
+            double c = (kDiff > 0) ? (1.0d - red - k) / kDiff : 0;
+            double m = (kDiff > 0) ? (1.0d - green - k) / kDiff : 0;
+            double y = (kDiff > 0) ? (1.0d - blue - k) / kDiff : 0;
 
             return new Cmyk(c, m, y, k);
         }
 
         public static Hsl ToHsl(this Color color)
         {
-            float red = color.R / 255.0f;
-            float green = color.G / 255.0f;
-            float blue = color.B / 255.0f;
+            double red = color.RedInterval();
+            double green = color.GreenInterval();
+            double blue = color.BlueInterval();
 
-            float min = Math.Min(red, Math.Min(green, blue));
-            float max = Math.Max(red, Math.Max(green, blue));
-            float delta = max - min;
+            double min = Math.Min(red, Math.Min(green, blue));
+            double max = Math.Max(red, Math.Max(green, blue));
+            double delta = max - min;
 
-            float lightness = (max + min) / 2.0f;
-            float saturation = 0.0f;
+            double lightness = (max + min) / 2.0d;
+            double saturation = 0.0d;
             int hue = 0;
 
             if (delta != 0)
             {
-                saturation = (lightness <= 0.5) ? (delta / (max + min)) : (delta / (2 - max - min));
+                saturation = (lightness <= 0.5d) ? (delta / (max + min)) : (delta / (2.0d - max - min));
 
-                float fHue;
+                double fHue;
 
                 if (red == max)
                 {
-                    fHue = ((green - blue) / 6) / delta;
+                    fHue = ((green - blue) / 6.0d) / delta;
                 }
                 else if (green == max)
                 {
-                    fHue = (1.0f / 3) + ((blue - red) / 6) / delta;
+                    fHue = (1.0d / 3.0d) + ((blue - red) / 6.0d) / delta;
                 }
                 else
                 {
-                    fHue = (2.0f / 3) + ((red - green) / 6) / delta;
+                    fHue = (2.0d / 3.0d) + ((red - green) / 6.0d) / delta;
                 }
 
                 if (fHue < 0) fHue += 1;

@@ -88,6 +88,115 @@ namespace AlchemyEngine.Extensions
             return bitmap;
         }
 
+        public static Bitmap Brightness(this Bitmap bitmap, int value)
+        {
+            if (value > 100 || value < -100)
+                throw new ArgumentException("The value must be between -100 and 100.", nameof(value));
+
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+            int bytesPerPixel = Bitmap.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+            int byteCount = bitmapData.Stride * bitmap.Height;
+            byte[] pixels = new byte[byteCount];
+            IntPtr ptrFirstPixel = bitmapData.Scan0;
+            Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
+            int heightInPixels = bitmapData.Height;
+            int widthInBytes = bitmapData.Width * bytesPerPixel;
+
+            for (int y = 0; y < heightInPixels; y++)
+            {
+                int currentLine = y * bitmapData.Stride;
+                for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+                {
+                    for (int com = 0; com < 3; com++)
+                    {
+                        int comVal = pixels[currentLine + x + com] + value;
+
+                        pixels[currentLine + x + com] = (byte)Math.Max(0, Math.Min(255, comVal));
+                    }
+                }
+            }
+
+            Marshal.Copy(pixels, 0, ptrFirstPixel, pixels.Length);
+            bitmap.UnlockBits(bitmapData);
+            return bitmap;
+        }
+
+        public static Bitmap Contrast(this Bitmap bitmap, int value)
+        {
+            if (value > 100 || value < -100)
+                throw new ArgumentException("The value must be between -100 and 100.", nameof(value));
+
+            double dVal = Math.Pow((100.0d + value) / 100.0d, 2);
+
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+            int bytesPerPixel = Bitmap.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+            int byteCount = bitmapData.Stride * bitmap.Height;
+            byte[] pixels = new byte[byteCount];
+            IntPtr ptrFirstPixel = bitmapData.Scan0;
+            Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
+            int heightInPixels = bitmapData.Height;
+            int widthInBytes = bitmapData.Width * bytesPerPixel;
+
+            for (int y = 0; y < heightInPixels; y++)
+            {
+                int currentLine = y * bitmapData.Stride;
+                for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+                {
+                    for (int com = 0; com < 3; com++)
+                    {
+                        double comInterval = pixels[currentLine + x + com] / 255.0d;
+                        comInterval -= 0.5d;
+                        comInterval *= dVal;
+                        comInterval += 0.5d;
+                        comInterval *= 255.0d;
+
+                        pixels[currentLine + x + com] = (byte)Math.Max(0, Math.Min(255, comInterval));
+                    }
+                }
+            }
+
+            Marshal.Copy(pixels, 0, ptrFirstPixel, pixels.Length);
+            bitmap.UnlockBits(bitmapData);
+            return bitmap;
+        }
+
+        public static Bitmap ChannelFilter(this Bitmap bitmap, Channel channel)
+        {
+            if ((int)channel > 2 || (int)channel < 0)
+                throw new ArgumentException("Invalid channel.", nameof(channel));
+
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+            int bytesPerPixel = Bitmap.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+            int byteCount = bitmapData.Stride * bitmap.Height;
+            byte[] pixels = new byte[byteCount];
+            IntPtr ptrFirstPixel = bitmapData.Scan0;
+            Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
+            int heightInPixels = bitmapData.Height;
+            int widthInBytes = bitmapData.Width * bytesPerPixel;
+
+            for (int y = 0; y < heightInPixels; y++)
+            {
+                int currentLine = y * bitmapData.Stride;
+                for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+                {
+                    byte blue = pixels[currentLine + x];
+                    byte green = pixels[currentLine + x + 1];
+                    byte red = pixels[currentLine + x + 2];
+
+                    pixels[currentLine + x] = (channel == Channel.Blue) ? blue : (byte)0;
+                    pixels[currentLine + x + 1] = (channel == Channel.Green) ? green : (byte)0;
+                    pixels[currentLine + x + 2] = (channel == Channel.Red) ? red : (byte)0;
+                }
+            }
+
+            Marshal.Copy(pixels, 0, ptrFirstPixel, pixels.Length);
+            bitmap.UnlockBits(bitmapData);
+            return bitmap;
+        }
+
         public static IEnumerable<Color> GetPallete(this Bitmap bitmap, PalleteGenerator palleteGenerator)
         {
             return palleteGenerator switch
@@ -234,5 +343,12 @@ namespace AlchemyEngine.Extensions
     {
         CubeMethod,
         AdditionMethod
+    }
+
+    public enum Channel
+    {
+        Red = 0,
+        Green = 1,
+        Blue = 2
     }
 }

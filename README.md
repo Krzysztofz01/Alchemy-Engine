@@ -37,9 +37,9 @@ The library extends the `System.Drawing.Bitmap` class with new functionalities.
 - ✅ `Scale(int percent)` - Scale the image by given percent.
 - ✅ `Invert()` - Invert the colors (negative effect).
 - ✅ `Grayscale()` - Make the image black and white.
-- ❌ `Brightness(int value)` - Change the brightness (Values between -100 and 100).
-- ❌ `Contrast(int value)` - Change the contrast (Values between -100 and 100).
-- ❌ `ChannelFilter(Channel)` - Extract the channel selected by the `Channel` enum.
+- ✅ `Brightness(int value)` - Change the brightness (Values between -100 and 100).
+- ✅ `Contrast(int value)` - Change the contrast (Values between -100 and 100).
+- ✅ `ChannelFilter(Channel)` - Extract the channel selected by the `Channel` enum.
 - ✅ `GetPallete(PalleteGenerator)` / `GetPalleteAsync(PalleteGenerator)` - Creates a color palette based on a bitmap, you can choose from different `PalleteGenerator` graphics sampling methods.
 
 ```PalleteGenerator``` enum:
@@ -49,9 +49,9 @@ The library extends the `System.Drawing.Bitmap` class with new functionalities.
 - ❌ `PalleteGenerator.HorizontalStripeMethod`
 
 ```Channel``` enum:
-- ❌ `Channel.Red`
-- ❌ `Channel.Green`
-- ❌ `Channel.Blue`
+- ✅ `Channel.Red`
+- ✅ `Channel.Green`
+- ✅ `Channel.Blue`
 
 ##  Processing
 
